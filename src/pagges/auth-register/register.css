@@ -1,0 +1,11 @@
+.register-nav{
+    background: linear-gradient(to bottom, #333333 55%, #006DF8 17.05% );
+    box-shadow: 4 4 0 0 #5D6173;
+}
+.register{
+    display: flex;
+    flex-direction: column;
+}
+.form-container{
+    flex: 1;
+}

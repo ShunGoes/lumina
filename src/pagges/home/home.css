@@ -1,0 +1,25 @@
+.home {
+  background-image: url("../../assets/chatty-bg.svg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* border: 2px solid red; */
+}
+.rectangle {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 51%), rgba(0, 0, 0, 0%));
+}
+.home-hero-section {
+  /* height: calc(100vh - 68px); */
+  flex: 1;
+}
+@media screen and (min-width: 1024px) {
+  .home {
+    background-image: url("../../assets/lumina-bg.svg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+}
