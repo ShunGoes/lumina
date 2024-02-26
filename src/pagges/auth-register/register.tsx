@@ -6,7 +6,7 @@ import './register.css'
 
 
 const Register_User = () => {
-  const { handle_register_user, setRegisterInfo, formError, registerInfo } =
+  const { handle_register_user, setRegisterInfo, registerInfo } =
     useContext(Auth_Context)!;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
