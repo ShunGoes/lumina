@@ -9,6 +9,7 @@ import {default as Flowers} from '../assets/flowers.svg'
 import {default as Arrow_Right} from '../assets/arrow-right.svg'
 import {default as Flower_Lg} from '../assets/flower-lg.svg'
 import {default as Cancel} from '../assets/cancel-icon.svg'
+import {default as Add_Icon} from '../assets/add-icon.svg'
 
 export default {
     Facebook,
@@ -22,4 +23,5 @@ export default {
     Arrow_Right,
     Flower_Lg,
     Cancel,
+    Add_Icon,
 }

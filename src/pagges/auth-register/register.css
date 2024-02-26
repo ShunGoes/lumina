@@ -9,3 +9,6 @@
 .form-container{
     flex: 1;
 }
+input::placeholder{
+    color: #A0ABC0;
+}
