@@ -1,6 +1,7 @@
 .register-nav{
-    background: linear-gradient(to bottom, #333333 55%, #006DF8 17.05% );
-    box-shadow: 4 4 0 0 #5D6173;
+    background: linear-gradient(to bottom, #006DF8 31%, #333333 100%);
+    box-shadow: 4 4 0 0 rgba(93, 97, 115, 0.12);
+    height: 90px;
 }
 .register{
     display: flex;

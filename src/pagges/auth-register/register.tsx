@@ -3,6 +3,8 @@ import { Auth_Context } from "../../context/auth.context";
 
 import "./register.css";
 import helper from "../../helper/helper";
+import Modal from "react-responsive-modal";
+import Upload_Modal from "../../components/upload_modal";
 
 // types and interfaces starts here
 
@@ -14,11 +16,6 @@ const Register_User = () => {
   const { handle_register_user, setRegisterInfo, registerInfo } =
     useContext(Auth_Context)!;
 
-  // dynamically creating refs for our input elements
-  const fileInputRef = Array.from({ length: 6 }, () =>
-    useRef<HTMLInputElement | null>(null)
-  );
-
   const [previewImage, setPreviewImage] = useState<ImgType[]>([
     { imgUrl: "", frame: "first_frame" },
     { imgUrl: "", frame: "second_frame" },
@@ -28,6 +25,27 @@ const Register_User = () => {
     { imgUrl: "", frame: "sixth_frame" },
   ]);
   const [number_of_picture, set_number_of_pics] = useState(0);
+  const [showModal, setShowModal] = useState(false);
+  const [domIndex, setDomIndex] = useState<number | null>(null)
+
+  // dynamically creating refs for our input elements
+  const fileInputRef = Array.from({ length: 6 }, () =>
+    useRef<HTMLInputElement | null>(null)
+  );
+
+  //  these functions handle input interractions
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setRegisterInfo({ ...registerInfo, [name]: value });
+  };
+
+  const handleGenderChange = (e: React.MouseEvent<HTMLInputElement>) => {
+    const { name, value } = e.currentTarget;
+
+    setRegisterInfo({ ...registerInfo, [name]: value });
+  };
+
   //  this function fires a click event on the element with the ref depending on the index the function receives
   const handleFileInputChange = (index: number) => {
     fileInputRef[index]?.current?.click();
@@ -47,29 +65,30 @@ const Register_User = () => {
           obj.frame === name ? { ...obj, imgUrl: reader.result } : obj
         );
         setPreviewImage(updated_state_array);
+        setShowModal(false)
       };
       //  this function is invoked here and all it does is to read the content of the file.
       //  after reading is completed, the onloadend event is fired on the "reader" instance
       reader.readAsDataURL(file);
     }
   };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-
-    setRegisterInfo({ ...registerInfo, [name]: value });
+  const handle_open_modal = (index: number) => {
+    setShowModal(true)
+    setDomIndex(index)
+  }
+  const handle_close_modal = () => {
+    setShowModal(false);
   };
-console.log(number_of_picture)
-  
+  // console.log(number_of_picture);
   useEffect(() => {
-    for(let obj of previewImage){
-      if(obj?.imgUrl){
-          set_number_of_pics(prev => prev + 1)
+    for (let obj of previewImage) {
+      if (obj?.imgUrl) {
+        set_number_of_pics((prev) => prev + 1);
       }
     }
     // const counter = previewImage.map(obj => typeof obj.imgUrl === 'string' && obj?.imgUrl?.length >= 2 ? 1 : number_of_picture)
     // set_number_of_pics(prev => prev + counter)
-  },[previewImage])
+  }, [previewImage]);
 
   return (
     <div className="  register">
@@ -98,8 +117,8 @@ console.log(number_of_picture)
               <input
                 type="text"
                 placeholder="name"
-                name="fname"
-                value={registerInfo.fname}
+                name="first_name"
+                value={registerInfo.first_name}
                 onChange={handleChange}
                 className="h-[50px]  bg-[#EDF0F7] font-[400] text-[#2b2b2b] text-[16px]  border border-[#CCCCCC] outline-none px-4 "
               />{" "}
@@ -116,8 +135,8 @@ console.log(number_of_picture)
               <input
                 type="text"
                 placeholder="last name"
-                name="fname"
-                value={registerInfo.fname}
+                name="last_name"
+                value={registerInfo.last_name}
                 onChange={handleChange}
                 className="h-[50px]  bg-[#EDF0F7] font-[400] text-[#2b2b2b] text-[16px]  border border-[#CCCCCC] outline-none px-4 "
               />{" "}
@@ -147,24 +166,6 @@ console.log(number_of_picture)
                 className="font-[500] text-[18px] text-[#2B2B2B] "
               >
                 {" "}
-                Password
-              </label>
-              <input
-                type="password"
-                placeholder="xxxxxxxxx"
-                name="password"
-                value={registerInfo.email}
-                onChange={handleChange}
-                className="h-[50px] bg-[#EDF0F7] font-[400] text-[#2b2b2b] text-[16px] border border-[#CCCCCC] outline-none px-4 "
-              />{" "}
-            </div>
-
-            <div className="flex flex-col gap-2 h-[94px]">
-              <label
-                htmlFor=""
-                className="font-[500] text-[18px] text-[#2B2B2B] "
-              >
-                {" "}
                 Birthday
               </label>
               <div className="flex gap-[10px] ">
@@ -173,7 +174,9 @@ console.log(number_of_picture)
                   pattern="\d*"
                   placeholder="DD"
                   name="day"
-                  value={registerInfo.email}
+                  inputMode="numeric"
+                  maxLength={2}
+                  value={registerInfo.day}
                   onChange={handleChange}
                   className="h-[50px] bg-[#EDF0F7] w-[104px] font-[400] text-[#2b2b2b] text-[16px] border border-[#CCCCCC] outline-none text-center "
                 />{" "}
@@ -182,7 +185,8 @@ console.log(number_of_picture)
                   pattern="\d*"
                   placeholder="MM"
                   name="month"
-                  value={registerInfo.email}
+                  maxLength={2}
+                  value={registerInfo.month}
                   onChange={handleChange}
                   className="h-[50px] bg-[#EDF0F7] w-[104px] font-[400] text-[#2b2b2b] text-[16px] border border-[#CCCCCC] outline-none text-center "
                 />{" "}
@@ -191,13 +195,14 @@ console.log(number_of_picture)
                   pattern="\d*"
                   placeholder="YYYY"
                   name="year"
-                  value={registerInfo.email}
+                  maxLength={4}
+                  value={registerInfo.year}
                   onChange={handleChange}
                   className="h-[50px] bg-[#EDF0F7] w-[123px] font-[400] text-[#2b2b2b] text-[16px] border border-[#CCCCCC] outline-none text-center "
                 />{" "}
               </div>
             </div>
-            <br />
+
             <div>
               <label
                 htmlFor=""
@@ -208,20 +213,18 @@ console.log(number_of_picture)
               </label>
               <div className="flex gap-[10px]">
                 <input
-                  type="text"
-                  placeholder="email"
-                  name="email"
-                  value={registerInfo.email}
-                  onChange={handleChange}
-                  className="h-[50px] bg-[#EDF0F7] w-5/12 font-[400] text-[#2b2b2b] text-[16px] border border-[#CCCCCC] outline-none text-center"
+                  type="button"
+                  name="gender"
+                  value="Man"
+                  onClick={handleGenderChange}
+                  className="h-[50px] bg-[#EDF0F7] w-5/12 font-[500] text-[#333333] text-[16px] border border-[##EDF0F7] outline-none text-center"
                 />
                 <input
-                  type="password"
-                  placeholder="password"
-                  name="password"
-                  value={registerInfo.password}
-                  onChange={handleChange}
-                  className="h-[50px] bg-[#EDF0F7] w-5/12 font-[400] text-[#2b2b2b] text-[16px] border border-[#CCCCCC] outline-none text-center"
+                  type="button"
+                  name="gender"
+                  value="Woman"
+                  onClick={handleGenderChange}
+                  className="h-[50px] bg-[#EDF0F7] w-5/12 font-[500] text-[#333333] text-[16px] border border-[##EDF0F7] outline-none text-center"
                 />{" "}
               </div>
             </div>
@@ -234,19 +237,20 @@ console.log(number_of_picture)
             <div className="grid grid-cols-3 gap-[20px] ">
               {previewImage.map((obj, index) => (
                 <div
-                  className="h-[230px] relative rounded-[8px] border-[4px] border-dashed"
+                  className={`h-[230px] relative rounded-[8px]  ${
+                    obj?.imgUrl ? "border-none" : "border-dashed border-[4px]"
+                  } `}
                   key={index}
                 >
-                  {typeof obj?.imgUrl === "string" &&
-                    obj?.imgUrl.length > 1 && (
-                      <div className="w-full h-full">
-                        <img
-                          src={obj?.imgUrl}
-                          alt=""
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    )}
+                  {typeof obj?.imgUrl === "string" && obj?.imgUrl && (
+                    <div className="w-full h-full">
+                      <img
+                        src={obj?.imgUrl}
+                        alt=""
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
                   <div className=" absolute -bottom-3 -right-2 ">
                     <input
                       type="file"
@@ -258,20 +262,30 @@ console.log(number_of_picture)
                       }
                       onChange={handleFileChange}
                     />
-                    <img
-                      src={helper.Add_Icon}
-                      alt="add pictures"
-                      className=" "
-                      onClick={() => handleFileInputChange(index)}
-                    />
+                    {obj?.imgUrl ? (
+                      <img
+                        src={helper.Edit_Icon}
+                        alt="edit pictures"
+                        className=" "
+                        onClick={() => handleFileInputChange(index)}
+                      />
+                    ) : (
+                      <img
+                        src={helper.Add_Icon}
+                        alt="add pictures"
+                        className=" "
+                        onClick={() => handle_open_modal(index)}
+                      />
+                    )}
                   </div>
                 </div>
               ))}
             </div>
-
-            <p className="my-[2rem]  font-[400] text-[16px] text-[#808080]">
-              Add at least 2 pictures to continue
-            </p>
+            {number_of_picture >= 2 ? null : (
+              <p className="my-[2rem]  font-[400] text-[16px] text-[#808080]">
+                Add at least 2 pictures to continue
+              </p>
+            )}
           </div>
         </div>
 
@@ -283,6 +297,9 @@ console.log(number_of_picture)
             register
           </button>
         )}
+        <Modal open={showModal} onClose={handle_close_modal} center>
+          <Upload_Modal uploadFromGallery={handleFileInputChange}  domIndex={domIndex}/>
+        </Modal>
       </div>
     </div>
   );
