@@ -10,6 +10,9 @@ import {default as Arrow_Right} from '../assets/arrow-right.svg'
 import {default as Flower_Lg} from '../assets/flower-lg.svg'
 import {default as Cancel} from '../assets/cancel-icon.svg'
 import {default as Add_Icon} from '../assets/add-icon.svg'
+import {default as Edit_Icon} from '../assets/edit-icon.svg'
+import {default as Camera_Icon} from '../assets/camera-icon.svg'
+import {default as Picture_Icon} from '../assets/picture-icon.svg'
 
 export default {
     Facebook,
@@ -24,4 +27,7 @@ export default {
     Flower_Lg,
     Cancel,
     Add_Icon,
+    Edit_Icon,
+    Picture_Icon,
+    Camera_Icon,
 }

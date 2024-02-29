@@ -19,8 +19,13 @@ export const Auth_Context_Provider = ({ children }: Provider_Prop) => {
 
   const [registerInfo, setRegisterInfo] = useState({
     email: "",
-    password: "",
-    fname: "",
+    first_name: "",
+    last_name: "",
+    day: "",
+    month: "",
+    year: "",
+    gender: ""
+
   });
 
   useEffect(() => {
@@ -31,6 +36,8 @@ export const Auth_Context_Provider = ({ children }: Provider_Prop) => {
       setUser(null);
     }
   }, []);
+
+console.log(registerInfo)
 
   // this function submits the registered user form
   const handle_register_user = useCallback(
