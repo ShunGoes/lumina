@@ -112,7 +112,6 @@ const Register_User = () => {
   };
   
   const capture_image = async (index: number) => {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
     try {
       const canvas_element = document.createElement("canvas");
       const ctx = canvas_element?.getContext("2d");
