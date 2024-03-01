@@ -379,7 +379,11 @@ const Register_User = () => {
                   ref={videoRef[domIndex!]}
                   className="border rounded-[10px] "
                 />
-                <button className="w-[5rem]  h-[50px] bg-black text-white py-[10px]  rounded-[10px]  " onClick={() => capture_image(domIndex!)}> capture</button>
+                <div className="flex flex-col gap-3">
+                <button className="w-[5rem]  h-[50px] bg-black text-white py-[10px]  rounded-[10px]  " onClick={() => capture_image(domIndex!)}> Capture</button>
+                <button className="w-[5rem]  h-[50px] bg-red-500 text-white py-[10px]  rounded-[10px]  " onClick={() => setShowImageModal(false)}> Cancel</button>
+
+                </div>
               </div>
             </div>
           )}
