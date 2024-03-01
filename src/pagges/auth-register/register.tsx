@@ -16,6 +16,9 @@ const Register_User = () => {
   const { handle_register_user, setRegisterInfo, registerInfo } =
     useContext(Auth_Context)!;
 
+
+    //    STATES
+  const [showImageModal, setShowImageModal] = useState(false);
   const [previewImage, setPreviewImage] = useState<ImgType[]>([
     { imgUrl: "", frame: "first_frame" },
     { imgUrl: "", frame: "second_frame" },
@@ -26,12 +29,20 @@ const Register_User = () => {
   ]);
   const [number_of_picture, set_number_of_pics] = useState(0);
   const [showModal, setShowModal] = useState(false);
-  const [domIndex, setDomIndex] = useState<number | null>(null)
+  const [domIndex, setDomIndex] = useState<number | null>(null);
+
+
 
   // dynamically creating refs for our input elements
   const fileInputRef = Array.from({ length: 6 }, () =>
     useRef<HTMLInputElement | null>(null)
   );
+  const videoRef = Array.from({ length: 6 }, () =>
+    useRef<HTMLVideoElement | null>(null)
+  );
+  
+
+
 
   //  these functions handle input interractions
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,6 +56,8 @@ const Register_User = () => {
 
     setRegisterInfo({ ...registerInfo, [name]: value });
   };
+
+
 
   //  this function fires a click event on the element with the ref depending on the index the function receives
   const handleFileInputChange = (index: number) => {
@@ -65,20 +78,90 @@ const Register_User = () => {
           obj.frame === name ? { ...obj, imgUrl: reader.result } : obj
         );
         setPreviewImage(updated_state_array);
-        setShowModal(false)
+        setShowModal(false);
       };
       //  this function is invoked here and all it does is to read the content of the file.
       //  after reading is completed, the onloadend event is fired on the "reader" instance
       reader.readAsDataURL(file);
     }
   };
+
+
+  //  these functions handle opening the camera and taking a photo
+  const open_camera = async (index: number) => {
+    setShowModal(false);
+    setShowImageModal(true);
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+
+      const video_refernce = videoRef[index].current;
+      console.log(video_refernce);
+
+      video_refernce!.srcObject = stream;
+      video_refernce?.play();
+
+      setTimeout(() => {
+        stream.getTracks().forEach((track) => track.stop());
+        setShowImageModal(false)
+
+      }, 56000)
+    } catch (error) {
+      console.log(`error accessing camera: ${error}`);
+    }
+  };
+  
+  const capture_image = async (index: number) => {
+    try {
+      const canvas_element = document.createElement("canvas");
+      const ctx = canvas_element?.getContext("2d");
+      
+      const video_refernce = videoRef[index].current;
+      
+      if (ctx && video_refernce) {
+        canvas_element!.width = 100;
+        canvas_element!.height = 100;
+        
+        ctx?.drawImage(
+          video_refernce!,
+          0,
+          0,
+          canvas_element!.width,
+          canvas_element!.height
+          );
+          
+          const result = canvas_element.toDataURL("image/jpg");
+          // console.log(result)
+          const updated_state_array = previewImage.map((obj, idx) =>
+          idx === index ? { ...obj, imgUrl: result } : obj
+          );
+          
+          setPreviewImage(updated_state_array);
+          setShowModal(false);
+          setShowImageModal(false)
+        }
+
+        if(video_refernce){
+          video_refernce.srcObject = null
+        }
+      } catch (err) {
+        console.log(`An error occured on line 146. error type - ${err}`);
+        
+      }
+  };
+
+
+
+  // helpers for modals
   const handle_open_modal = (index: number) => {
-    setShowModal(true)
-    setDomIndex(index)
-  }
+    setShowModal(true);
+    setDomIndex(index);
+  };
   const handle_close_modal = () => {
     setShowModal(false);
   };
+
+
   // console.log(number_of_picture);
   useEffect(() => {
     for (let obj of previewImage) {
@@ -94,7 +177,7 @@ const Register_User = () => {
     <div className="  register">
       <nav className=" shadow shadow-[#5D6173] register-nav "></nav>
 
-      <div className="form-container ">
+      <div className="form-container relative ">
         <div className="w-[362px] h-[61px]  mx-auto mb-[3rem] mt-[2rem] flex flex-col items-center">
           <span className="font-[600] text-[26px] ">Create Acount </span>
           <span className="font-[400] text-[16px] text-[#808080]">
@@ -251,7 +334,7 @@ const Register_User = () => {
                       />
                     </div>
                   )}
-                  <div className=" absolute -bottom-3 -right-2 ">
+                  <div className=" absolute bottom-0  w-full h-full ">
                     <input
                       type="file"
                       accept="image/*"
@@ -262,21 +345,23 @@ const Register_User = () => {
                       }
                       onChange={handleFileChange}
                     />
+                    <div className=" w-full h-full relative">
                     {obj?.imgUrl ? (
                       <img
                         src={helper.Edit_Icon}
                         alt="edit pictures"
-                        className=" "
-                        onClick={() => handleFileInputChange(index)}
+                        className="absolute -bottom-3 -right-2 "
+                        onClick={() => handle_open_modal(index)}
                       />
                     ) : (
                       <img
                         src={helper.Add_Icon}
                         alt="add pictures"
-                        className=" "
+                        className= " absolute -bottom-3 -right-2"
                         onClick={() => handle_open_modal(index)}
                       />
                     )}
+                    </div>
                   </div>
                 </div>
               ))}
@@ -287,6 +372,17 @@ const Register_User = () => {
               </p>
             )}
           </div>
+          {showImageModal && (
+            <div className="absolute top-0 bottom-0 left-0 right-0 h-[80vh] flex justify-center items-center  ">
+              <div className="w-8/12 h-8/12  flex justify-between">
+                <video
+                  ref={videoRef[domIndex!]}
+                  className="border rounded-[10px] "
+                />
+                <button className="w-[5rem]  h-[50px] bg-black text-white py-[10px]  rounded-[10px]  " onClick={() => capture_image(domIndex!)}> capture</button>
+              </div>
+            </div>
+          )}
         </div>
 
         {number_of_picture >= 2 && (
@@ -298,8 +394,14 @@ const Register_User = () => {
           </button>
         )}
         <Modal open={showModal} onClose={handle_close_modal} center>
-          <Upload_Modal uploadFromGallery={handleFileInputChange}  domIndex={domIndex}/>
+          <Upload_Modal
+            uploadFromGallery={handleFileInputChange}
+            open_camera={open_camera}
+            domIndex={domIndex}
+          />
         </Modal>
+        {/* <Modal open={showImageModal} onClose={handle_close_image_modal}  center>
+        </Modal> */}
       </div>
     </div>
   );

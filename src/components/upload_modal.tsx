@@ -3,11 +3,16 @@ import helper from "../helper/helper";
 interface PropsType {
   uploadFromGallery: (index: number) => void;
   domIndex: number | null;
+  open_camera: (index: number) => Promise<void>,
 }
 
-const Upload_Modal = ({ uploadFromGallery, domIndex }: PropsType) => {
+const Upload_Modal = ({ uploadFromGallery, domIndex, open_camera}: PropsType) => {
     const handleUploads = () =>{ 
         uploadFromGallery(domIndex!)
+    }
+
+    const handleCaptureImage = () => {
+      open_camera(domIndex!)
     }
 
   return (
@@ -15,7 +20,7 @@ const Upload_Modal = ({ uploadFromGallery, domIndex }: PropsType) => {
       <div className="w-11/12 h-[80%] mx-auto  flex flex-col items-center gap-[6rem]">
         <p className="font-[700] text-[18px] text-[#2B2B2B]  ">Upload Photo</p>
         <div>
-          <div onClick={handleUploads} className="w-[354px] h-[58px] rounded-[32px] border-[2px] border-[#CCCCCC] py-[10px] px-[24px] flex  items-center my-[2rem] ">
+          <div onClick={handleUploads} className="w-[354px] cursor-pointer h-[58px] rounded-[32px] border-[2px] border-[#CCCCCC] py-[10px] px-[24px] flex  items-center my-[2rem] ">
             <div className="w-[20%]">
               <img src={helper.Picture_Icon} className="" />
             </div>
@@ -23,7 +28,7 @@ const Upload_Modal = ({ uploadFromGallery, domIndex }: PropsType) => {
               Upload from Gallery
             </p>
           </div>
-          <div className="w-[354px] h-[58px] rounded-[32px] border-[2px] border-[#CCCCCC] py-[10px] px-[24px] flex  items-center ">
+          <div onClick={handleCaptureImage} className="w-[354px] cursor-pointer h-[58px] rounded-[32px] border-[2px] border-[#CCCCCC] py-[10px] px-[24px] flex  items-center ">
             <div className="w-[20%]">
               <img src={helper.Camera_Icon} className="" />
             </div>

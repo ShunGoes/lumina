@@ -37,7 +37,6 @@ export const Auth_Context_Provider = ({ children }: Provider_Prop) => {
     }
   }, []);
 
-console.log(registerInfo)
 
   // this function submits the registered user form
   const handle_register_user = useCallback(
