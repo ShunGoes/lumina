@@ -1,0 +1,6 @@
+.user-passion{
+    overflow: auto;
+}
+.user-passion::-webkit-scrollbar{
+    width: 5px;
+}

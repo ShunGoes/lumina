@@ -1,0 +1,16 @@
+.explore-sidebar{
+    height: calc(100vh - 80px);
+    overflow: auto;
+}
+.explore-sidebar::-webkit-scrollbar {
+    width: 7px;
+  }
+  .explore-sidebar::-webkit-scrollbar-track {
+    
+  }
+  .explore-sidebar::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #006DF88C, #006DF82B);
+    height: 40px;
+    border-radius: 10px;
+
+  }
