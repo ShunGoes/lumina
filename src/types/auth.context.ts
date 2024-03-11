@@ -16,7 +16,8 @@ interface RegisterUserInfo {
   day: string,
   month: string,
   year: string,
-  gender: string
+  gender: string,
+  passion: Set<string>
 }
 export interface Auth_Context_Type {
     user: UserType,

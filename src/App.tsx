@@ -3,6 +3,7 @@ import { Routes,Route } from 'react-router-dom'
 
 import './App.css'
 import Loading from './components/loading'
+import Explore_Layout from './layout/explore'
 
 function App() {
   const Home = lazy(() => import('./pagges/home/home'))
@@ -17,6 +18,10 @@ function App() {
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
         <Route path='/tinder' element={<Tinder />} />
+        <Route>
+          <Route path='/explore' element={<Explore_Layout />} />
+          
+        </Route>
       </Routes>
       </Suspense>
      </div>

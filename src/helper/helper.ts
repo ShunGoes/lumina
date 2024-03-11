@@ -13,7 +13,18 @@ import {default as Add_Icon} from '../assets/add-icon.svg'
 import {default as Edit_Icon} from '../assets/edit-icon.svg'
 import {default as Camera_Icon} from '../assets/camera-icon.svg'
 import {default as Picture_Icon} from '../assets/picture-icon.svg'
-
+import {default as Plus_Circle} from '../assets/plus-circle.svg'
+import {default as Profile_Picture} from '../assets/profile-photo.png'
+import {default as Frame_3} from '../assets/frame-3.svg'
+import {default as Mail_Icon} from '../assets/mail.svg'
+import {default as Location_Icon} from '../assets/location-icon.svg'
+import {default as Search} from '../assets/search.svg'
+import {default as Romantic_Gestures} from '../assets/romantic-gestures.svg'
+import {default as Friendship_Goals} from '../assets/friendship-goals.svg'
+import {default as Adventurous_Dates} from '../assets/adventurous-dates.svg'
+import {default as Cozy_Evening} from '../assets/cozy-evening.svg'
+import {default as Fun_Activities} from '../assets/fun-activities.svg'
+import {default as Exploring_Together} from '../assets/exploring-together.svg'
 export default {
     Facebook,
     Hamburger,
@@ -30,4 +41,16 @@ export default {
     Edit_Icon,
     Picture_Icon,
     Camera_Icon,
+    Plus_Circle,
+    Profile_Picture,
+    Frame_3,
+    Mail_Icon,
+    Location_Icon,
+    Search,
+    Romantic_Gestures,
+    Exploring_Together,
+    Fun_Activities,
+    Cozy_Evening,
+    Adventurous_Dates,
+    Friendship_Goals
 }
