@@ -25,7 +25,19 @@ import {default as Adventurous_Dates} from '../assets/adventurous-dates.svg'
 import {default as Cozy_Evening} from '../assets/cozy-evening.svg'
 import {default as Fun_Activities} from '../assets/fun-activities.svg'
 import {default as Exploring_Together} from '../assets/exploring-together.svg'
+import {default as No_Match} from '../assets/no-match.svg'
+import {default as Interest} from '../assets/interest.svg'
+import {default as Favorite} from '../assets/favorite.svg'
+import {default as Fresh_Guy} from '../assets/fresh-guy.svg'
+
+
+
+
 export default {
+    Fresh_Guy,
+    No_Match,
+    Interest,
+    Favorite,
     Facebook,
     Hamburger,
     Logo,
