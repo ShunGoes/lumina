@@ -1,5 +1,4 @@
-import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
-import { Auth_Context } from "../../context/auth.context";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 import "./register.css";
 import helper from "../../helper/helper";

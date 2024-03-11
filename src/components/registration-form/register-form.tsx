@@ -11,7 +11,6 @@ const Registration_Form = () => {
   const { handle_register_user, registerInfo, setRegisterInfo } =
     useContext(Auth_Context)!;
   const [showModal, setShowModal] = useState(false);
-  const [active, setwActive] = useState(false)
   
 
   //  these functions handle input interractions
