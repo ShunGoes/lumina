@@ -5,6 +5,7 @@ import "./register.css";
 import helper from "../../helper/helper";
 import Modal from "react-responsive-modal";
 import Upload_Modal from "../../components/upload_modal";
+import Registration_Form from "../../components/registration-form/register-form";
 
 // types and interfaces starts here
 
@@ -13,10 +14,6 @@ type ImgType = Record<string, string | ArrayBuffer | null>;
 // types and interfaces ends here
 
 const Register_User = () => {
-  const { handle_register_user, setRegisterInfo, registerInfo } =
-    useContext(Auth_Context)!;
-
-
     //    STATES
   const [showImageModal, setShowImageModal] = useState(false);
   const [previewImage, setPreviewImage] = useState<ImgType[]>([
@@ -44,18 +41,9 @@ const Register_User = () => {
 
 
 
-  //  these functions handle input interractions
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+ 
 
-    setRegisterInfo({ ...registerInfo, [name]: value });
-  };
 
-  const handleGenderChange = (e: React.MouseEvent<HTMLInputElement>) => {
-    const { name, value } = e.currentTarget;
-
-    setRegisterInfo({ ...registerInfo, [name]: value });
-  };
 
 
 
@@ -184,134 +172,11 @@ const Register_User = () => {
             Join the community and start connecting today!
           </span>
         </div>
+
         <div className="grid grid-cols-2 w-11/12 mx-auto justify-items-center ">
-          <form
-            className="w-11/12 col-span-2 lg:col-span-1"
-            onSubmit={handle_register_user}
-          >
-            <div className="flex flex-col gap-2 h-[94px]">
-              <label
-                htmlFor=""
-                className="font-[500] text-[18px] text-[#2B2B2B] "
-              >
-                {" "}
-                First Name
-              </label>
-              <input
-                type="text"
-                placeholder="name"
-                name="first_name"
-                value={registerInfo.first_name}
-                onChange={handleChange}
-                className="h-[50px]  bg-[#EDF0F7] font-[400] text-[#2b2b2b] text-[16px]  border border-[#CCCCCC] outline-none px-4 "
-              />{" "}
-            </div>
 
-            <div className="flex flex-col gap-2 h-[94px]">
-              <label
-                htmlFor=""
-                className="font-[500] text-[18px] text-[#2B2B2B] "
-              >
-                {" "}
-                Last Name
-              </label>
-              <input
-                type="text"
-                placeholder="last name"
-                name="last_name"
-                value={registerInfo.last_name}
-                onChange={handleChange}
-                className="h-[50px]  bg-[#EDF0F7] font-[400] text-[#2b2b2b] text-[16px]  border border-[#CCCCCC] outline-none px-4 "
-              />{" "}
-            </div>
-
-            <div className="flex flex-col gap-2 h-[94px]">
-              <label
-                htmlFor=""
-                className="font-[500] text-[18px] text-[#2B2B2B] "
-              >
-                {" "}
-                Email Address
-              </label>
-              <input
-                type="email"
-                placeholder="johndoe@exammple.com"
-                name="email"
-                value={registerInfo.email}
-                onChange={handleChange}
-                className="h-[50px] bg-[#EDF0F7] font-[400] text-[#2b2b2b] text-[16px] border border-[#CCCCCC] outline-none px-4 "
-              />{" "}
-            </div>
-
-            <div className="flex flex-col gap-2 h-[94px]">
-              <label
-                htmlFor=""
-                className="font-[500] text-[18px] text-[#2B2B2B] "
-              >
-                {" "}
-                Birthday
-              </label>
-              <div className="flex gap-[10px] ">
-                <input
-                  type="number"
-                  pattern="\d*"
-                  placeholder="DD"
-                  name="day"
-                  inputMode="numeric"
-                  maxLength={2}
-                  value={registerInfo.day}
-                  onChange={handleChange}
-                  className="h-[50px] bg-[#EDF0F7] w-[104px] font-[400] text-[#2b2b2b] text-[16px] border border-[#CCCCCC] outline-none text-center "
-                />{" "}
-                <input
-                  type="number"
-                  pattern="\d*"
-                  placeholder="MM"
-                  name="month"
-                  maxLength={2}
-                  value={registerInfo.month}
-                  onChange={handleChange}
-                  className="h-[50px] bg-[#EDF0F7] w-[104px] font-[400] text-[#2b2b2b] text-[16px] border border-[#CCCCCC] outline-none text-center "
-                />{" "}
-                <input
-                  type="number"
-                  pattern="\d*"
-                  placeholder="YYYY"
-                  name="year"
-                  maxLength={4}
-                  value={registerInfo.year}
-                  onChange={handleChange}
-                  className="h-[50px] bg-[#EDF0F7] w-[123px] font-[400] text-[#2b2b2b] text-[16px] border border-[#CCCCCC] outline-none text-center "
-                />{" "}
-              </div>
-            </div>
-
-            <div>
-              <label
-                htmlFor=""
-                className="text-[#2B2B2B] font-[500] text-[18px] "
-              >
-                {" "}
-                Gender
-              </label>
-              <div className="flex gap-[10px]">
-                <input
-                  type="button"
-                  name="gender"
-                  value="Man"
-                  onClick={handleGenderChange}
-                  className="h-[50px] bg-[#EDF0F7] w-5/12 font-[500] text-[#333333] text-[16px] border border-[##EDF0F7] outline-none text-center"
-                />
-                <input
-                  type="button"
-                  name="gender"
-                  value="Woman"
-                  onClick={handleGenderChange}
-                  className="h-[50px] bg-[#EDF0F7] w-5/12 font-[500] text-[#333333] text-[16px] border border-[##EDF0F7] outline-none text-center"
-                />{" "}
-              </div>
-            </div>
-          </form>
+        {/* form starts here */}
+       <Registration_Form />
 
           <div className="h-full w-11/12 col-span-1 hidden  lg:block">
             <p className="font-[500] text-[18px] text-[#808080] mb-[1rem]">
@@ -404,8 +269,7 @@ const Register_User = () => {
             domIndex={domIndex}
           />
         </Modal>
-        {/* <Modal open={showImageModal} onClose={handle_close_image_modal}  center>
-        </Modal> */}
+       
       </div>
     </div>
   );

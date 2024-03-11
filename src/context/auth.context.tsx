@@ -24,7 +24,8 @@ export const Auth_Context_Provider = ({ children }: Provider_Prop) => {
     day: "",
     month: "",
     year: "",
-    gender: ""
+    gender: "",
+    passion: new Set<string>()
 
   });
 

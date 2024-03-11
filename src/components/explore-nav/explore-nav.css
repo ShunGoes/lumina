@@ -1,0 +1,7 @@
+.explore-nav{
+    background: linear-gradient(to bottom, #006DF88C, #006DF82B);
+    box-shadow: 4 4 0  #5D61731F;
+}
+input::placeholder{
+    color: #A0ABC0;
+}
