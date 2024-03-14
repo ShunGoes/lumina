@@ -37,7 +37,7 @@ const Passion_Box = ({ passion, idx }: PassionProps) => {
   return (
     <span
       onClick={() => add_item_to_passion(idx)}
-      className={`${active ? 'border-[#F74887]' : "" } rounded-[20px] py-[8px] px-[12px] border-[2px] m-[5px] border-[#CCCCCC] text-[14px] font-[400] cursor-pointer `}
+      className={`${active ? 'border-[#F74887]' : "" } rounded-[20px] flex justify-center items-center lg:py-[8px] px-[12px] py-[4px] border lg:border-[2px] m-[5px] border-[#CCCCCC] text-[12px] lg:text-[14px] font-[200] lg:font-[400] cursor-pointer `}
       >
       {passion}
     </span>
