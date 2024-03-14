@@ -47,7 +47,7 @@ const Explore_Users = () => {
           <img
             src={img_array[tab]}
             alt=""
-            className="h-full w-full object-contain rounded-[20px]"
+            className="h-full w-full object-cover rounded-[20px]"
           />
           <div
             style={overlay}

@@ -176,19 +176,22 @@ const Registration_Form = () => {
           ))}
         </div>
       </div>
-
+{/*  */}
       <Modal open={showModal} onClose={handleCloseModal} center>
-        <div className="h-[550px] w-[600px] rounded-[10px] flex flex-col justify-center gap-[2rem] ">
-          <div className=" w-[511px] mx-auto flex flex-col items-center ">
+        <div className="">
+
+        </div>
+        <div className="w-[300px] h-[700px] lg:h-[550px] lg:w-[600px]    rounded-[10px]  flex flex-col justify-center gap-[2rem] ">
+          <div className=" lg:w-[511px] w-full mx-auto flex flex-col items-center ">
             <h6 className="font-[700] text-[18px] text-[#2B2B2B]  ">
               Passions
             </h6>
-            <p className="font-[400] text-[14px] text-[#A0ABC0] ">
+            <p className="font-[400] text-[14px] text-[#A0ABC0] text-center ">
               Let everyone know what you are passionate about by adding it to
               your profile
             </p>
           </div>
-          <div className="w-[514px] h-[400px]  mx-auto flex  flex-wrap">
+          <div className="lg:w-[514px] w-full lg:h-[400px]  mx-auto flex   flex-wrap">
             {PASSION_DATA.map((passion, index) => (
             <Passion_Box key={index} passion={passion} idx={index} />
             ))}
