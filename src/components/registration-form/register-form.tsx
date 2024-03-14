@@ -196,7 +196,7 @@ const Registration_Form = () => {
             <Passion_Box key={index} passion={passion} idx={index} />
             ))}
           </div>
-          <button onClick={handle_show_passion} className="px-[24px] py-[10px] h-[50px] text-white bg-[#F74887] rounded-[10px] font-[700]"> Add Passion </button>
+          <button onClick={handle_show_passion} className="px-[24px] py-[10px] h-[50px] text-white bg-[#F74887] rounded-[10px] outline-none font-[700]"> Add Passion </button>
         </div>
       </Modal>
     </form>
