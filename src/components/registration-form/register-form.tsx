@@ -11,7 +11,8 @@ const Registration_Form = () => {
   const { handle_register_user, registerInfo, setRegisterInfo } =
     useContext(Auth_Context)!;
   const [showModal, setShowModal] = useState(false);
-  
+  const [genderBtn, setGenderBtn] = useState('')
+  const [showPassion, setShowPassion] = useState(false)
 
   //  these functions handle input interractions
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,15 +25,22 @@ const Registration_Form = () => {
     const { name, value } = e.currentTarget;
 
     setRegisterInfo({ ...registerInfo, [name]: value });
+    setGenderBtn(value)
   };
 
   const handleOpenModal = () => {
     setShowModal(true);
+    setShowPassion(false)
   };
   const handleCloseModal = () => {
     setShowModal(false);
   };
 
+  const handle_show_passion = () => {
+    setShowPassion(true)
+    setShowModal(false)
+
+  }
 
   return (
     <form
@@ -50,7 +58,7 @@ const Registration_Form = () => {
           name="first_name"
           value={registerInfo.first_name}
           onChange={handleChange}
-          className="h-[50px]  bg-[#EDF0F7] font-[400] text-[#2b2b2b] text-[16px]  border border-[#CCCCCC] outline-none px-4 "
+          className="h-[50px]  bg-[#EDF0F7] font-[400] text-[#2b2b2b] text-[16px]  border border-[#CCCCCC] outline-none px-4 rounded-[10px]  "
         />{" "}
       </div>
 
@@ -65,7 +73,7 @@ const Registration_Form = () => {
           name="last_name"
           value={registerInfo.last_name}
           onChange={handleChange}
-          className="h-[50px]  bg-[#EDF0F7] font-[400] text-[#2b2b2b] text-[16px]  border border-[#CCCCCC] outline-none px-4 "
+          className="h-[50px]  bg-[#EDF0F7] font-[400] text-[#2b2b2b] text-[16px]  border border-[#CCCCCC] outline-none px-4 rounded-[10px] "
         />{" "}
       </div>
 
@@ -80,7 +88,7 @@ const Registration_Form = () => {
           name="email"
           value={registerInfo.email}
           onChange={handleChange}
-          className="h-[50px] bg-[#EDF0F7] font-[400] text-[#2b2b2b] text-[16px] border border-[#CCCCCC] outline-none px-4 "
+          className="h-[50px] bg-[#EDF0F7] font-[400] text-[#2b2b2b] text-[16px] border border-[#CCCCCC] outline-none px-4 rounded-[10px] "
         />{" "}
       </div>
 
@@ -99,7 +107,7 @@ const Registration_Form = () => {
             maxLength={2}
             value={registerInfo.day}
             onChange={handleChange}
-            className="h-[50px] bg-[#EDF0F7] w-[104px] font-[400] text-[#2b2b2b] text-[16px] border border-[#CCCCCC] outline-none text-center "
+            className="h-[50px] bg-[#EDF0F7] w-[104px] font-[400] text-[#2b2b2b] text-[16px] border border-[#CCCCCC] outline-none text-center rounded-[10px]"
           />{" "}
           <input
             type="number"
@@ -109,7 +117,7 @@ const Registration_Form = () => {
             maxLength={2}
             value={registerInfo.month}
             onChange={handleChange}
-            className="h-[50px] bg-[#EDF0F7] w-[104px] font-[400] text-[#2b2b2b] text-[16px] border border-[#CCCCCC] outline-none text-center "
+            className="h-[50px] bg-[#EDF0F7] w-[104px] font-[400] text-[#2b2b2b] text-[16px] border border-[#CCCCCC] outline-none text-center rounded-[10px]"
           />{" "}
           <input
             type="number"
@@ -119,7 +127,7 @@ const Registration_Form = () => {
             maxLength={4}
             value={registerInfo.year}
             onChange={handleChange}
-            className="h-[50px] bg-[#EDF0F7] w-[123px] font-[400] text-[#2b2b2b] text-[16px] border border-[#CCCCCC] outline-none text-center "
+            className="h-[50px] bg-[#EDF0F7] w-[123px] font-[400] text-[#2b2b2b] text-[16px] border border-[#CCCCCC] outline-none text-center rounded-[10px]"
           />{" "}
         </div>
       </div>
@@ -135,34 +143,34 @@ const Registration_Form = () => {
             name="gender"
             value="Man"
             onClick={handleGenderChange}
-            className="h-[50px] bg-[#EDF0F7] w-5/12 font-[500] text-[#333333] text-[16px] border border-[##EDF0F7] outline-none text-center"
+            className={`${genderBtn.toLowerCase() === 'man' ? 'bg-[#F74887] text-white' : 'bg-[#EDF0F7]' } h-[50px]  w-5/12 font-[500] text-[#333333] text-[16px] border border-[##EDF0F7] outline-none text-center rounded-[10px]`}
           />
           <input
             type="button"
             name="gender"
             value="Woman"
             onClick={handleGenderChange}
-            className="h-[50px] bg-[#EDF0F7] w-5/12 font-[500] text-[#333333] text-[16px] border border-[##EDF0F7] outline-none text-center"
+            className={`${genderBtn.toLowerCase() === 'woman' ? 'bg-[#F74887] text-white' : 'bg-[#EDF0F7]' } h-[50px] bg-[#EDF0F7] w-5/12 font-[500] text-[#333333] text-[16px] border border-[##EDF0F7] outline-none text-center rounded-[10px]`}
           />{" "}
         </div>
       </div>
 
-      <div onClick={handleOpenModal} className="flex flex-col gap-2 my-2">
+      <div  className="flex flex-col gap-2 my-2">
         <label
           htmlFor="passion"
           className="font-[500] text-[18px] text-[#2B2B2B] "
         >
           Passion
         </label>
-        <div className="w-[265px] h-[50px] rounded-[10px] border-[2px] bg-[#EDF0F7] border-[#A0ABC0] px-[24px] gap-4 flex  items-center cursor-pointer ">
+        <div onClick={handleOpenModal} className="w-[265px] h-[50px] rounded-[10px] border-[2px] bg-[#EDF0F7] border-[#A0ABC0] px-[24px] gap-4 flex  items-center cursor-pointer ">
           <img src={helper.Plus_Circle} alt="" />
-          <span className="font-[500] text-[16px] text-[#464646] ">
+          <span  className="font-[500] text-[16px] text-[#464646] ">
             Add Passion
           </span>
         </div>
-        <div className="w-10/12 shadow shadow-[#F74887] rounded-[15px] p-[14px] flex flex-wrap mt-4 mb-[3rem]">
-          {Array.from(registerInfo.passion).map((item: string) => (
-            <span  className="rounded-[20px] py-[8px] px-[12px] border-[2px] m-[7px] border-[#CCCCCC] text-[14px] font-[400] cursor-pointer  shrink-0">
+        <div className="w-10/12  rounded-[15px] p-[14px] flex flex-wrap mt-4 mb-[3rem]">
+          {showPassion && Array.from(registerInfo.passion).map((item: string) => (
+            <span key={item}  className="rounded-[20px] py-[8px] px-[12px] border-[2px] m-[7px] border-[#CCCCCC] text-[14px] font-[400] cursor-pointer  shrink-0">
               {item}
             </span>
           ))}
@@ -185,6 +193,7 @@ const Registration_Form = () => {
             <Passion_Box key={index} passion={passion} idx={index} />
             ))}
           </div>
+          <button onClick={handle_show_passion} className="px-[24px] py-[10px] h-[50px] text-white bg-[#F74887] rounded-[10px] font-[700]"> Add Passion </button>
         </div>
       </Modal>
     </form>

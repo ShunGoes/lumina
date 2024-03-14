@@ -172,19 +172,15 @@ const Register_User = () => {
           </span>
         </div>
 
-        <div className="grid grid-cols-2 w-11/12 mx-auto justify-items-center ">
-
-        {/* form starts here */}
-       <Registration_Form />
-
-          <div className="h-full w-11/12 col-span-1 hidden  lg:block">
-            <p className="font-[500] text-[18px] text-[#808080] mb-[1rem]">
+        <div className="grid grid-cols-1 gap-y-[2rem] lg:grid-cols-2 w-11/12 mx-auto justify-items-center ">
+        <div className="h-full w-full lg:w-11/12 col-span-1  lg:hidden">
+            <p className="font-[500] text-[22px] text-[#808080] mb-[1rem]">
               Profile Picture
             </p>
-            <div className="grid grid-cols-3 gap-[20px] ">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-[20px] ">
               {previewImage.map((obj, index) => (
                 <div
-                  className={`h-[230px] relative rounded-[8px]  ${
+                  className={`h-[200px]  lg:h-[230px] relative rounded-[8px]  ${
                     obj?.imgUrl ? "border-none" : "border-dashed border-[4px]"
                   } `}
                   key={index}
@@ -194,7 +190,7 @@ const Register_User = () => {
                       <img
                         src={obj?.imgUrl}
                         alt=""
-                        className="w-full h-full object-cover"
+                        className="w-full h-full rounded-[8px] object-cover"
                       />
                     </div>
                   )}
@@ -236,6 +232,68 @@ const Register_User = () => {
               </p>
             )}
           </div>
+        {/* form starts here */}
+       <Registration_Form />
+       <div className="h-full w-full lg:w-11/12 col-span-1  hidden lg:block">
+            <p className="font-[500] text-[18px] text-[#808080] mb-[1rem]">
+              Profile Picture
+            </p>
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-[20px] ">
+              {previewImage.map((obj, index) => (
+                <div
+                  className={`h-[230px] relative rounded-[8px]  ${
+                    obj?.imgUrl ? "border-none" : "border-dashed border-[4px]"
+                  } `}
+                  key={index}
+                >
+                  {typeof obj?.imgUrl === "string" && obj?.imgUrl && (
+                    <div className="w-full h-full ">
+                      <img
+                        src={obj?.imgUrl}
+                        alt=""
+                        className="w-full h-full object-cover rounded-[8px]"
+                      />
+                    </div>
+                  )}
+                  <div className=" absolute bottom-0  w-full h-full ">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      ref={fileInputRef[index]}
+                      name={
+                        typeof obj?.frame === "string" ? obj?.frame : undefined
+                      }
+                      onChange={handleFileChange}
+                    />
+                    <div className=" w-full h-full relative">
+                    {obj?.imgUrl ? (
+                      <img
+                        src={helper.Edit_Icon}
+                        alt="edit pictures"
+                        className="absolute -bottom-3 -right-2 "
+                        onClick={() => handle_open_modal(index)}
+                      />
+                    ) : (
+                      <img
+                        src={helper.Add_Icon}
+                        alt="add pictures"
+                        className= " absolute -bottom-3 -right-2"
+                        onClick={() => handle_open_modal(index)}
+                      />
+                    )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {number_of_picture >= 2 ? null : (
+              <p className="my-[2rem]  font-[400] text-[16px] text-[#808080]">
+                Add at least 2 pictures to continue
+              </p>
+            )}
+          </div>
+         
           {showImageModal && (
             <div className="absolute top-0 bottom-0 left-0 right-0 h-[80vh] flex justify-center items-center  ">
               <div className="w-8/12 h-8/12  flex justify-between">
@@ -261,12 +319,15 @@ const Register_User = () => {
             register
           </button>
         )}
-        <Modal open={showModal} onClose={handle_close_modal} center>
-          <Upload_Modal
-            uploadFromGallery={handleFileInputChange}
-            open_camera={open_camera}
-            domIndex={domIndex}
-          />
+        <Modal open={showModal} onClose={handle_close_modal}  center>
+          <div className="h-[300px] w-[300px] lg:w-[547px] lg:h-[500px]">
+              <Upload_Modal
+                uploadFromGallery={handleFileInputChange}
+                open_camera={open_camera}
+                domIndex={domIndex}
+              />
+
+          </div>
         </Modal>
        
       </div>
