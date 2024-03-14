@@ -16,7 +16,7 @@ const Upload_Modal = ({ uploadFromGallery, domIndex, open_camera}: PropsType) =>
     }
 
   return (
-    <div className="  rounded-[10px] bg-white  flex justify-center items-center">
+    <div className="rounded-[10px] bg-white  flex justify-center items-center">
       <div className="w-full lg:w-11/12 h-[80%] mx-auto  flex flex-col items-center gap-[1rem] lg:gap-[6rem]">
         <p className="font-[700] text-[18px] text-[#2B2B2B]  ">Upload Photo</p>
         <div className="  w-full ">
