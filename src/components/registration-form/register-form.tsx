@@ -92,12 +92,12 @@ const Registration_Form = () => {
         />{" "}
       </div>
 
-      <div className="flex flex-col gap-2 h-[94px] my-2">
+      <div className="flex flex-col gap-2 h-[94px] my-2 ">
         <label htmlFor="" className="font-[500] text-[18px] text-[#2B2B2B] ">
           {" "}
           Birthday
         </label>
-        <div className="flex gap-[10px] ">
+        <div className="flex gap-[10px]  w-full">
           <input
             type="number"
             pattern="\d*"
@@ -107,7 +107,7 @@ const Registration_Form = () => {
             maxLength={2}
             value={registerInfo.day}
             onChange={handleChange}
-            className="h-[50px] bg-[#EDF0F7] w-[104px] font-[400] text-[#2b2b2b] text-[16px] border border-[#CCCCCC] outline-none text-center rounded-[10px]"
+            className="h-[50px] bg-[#EDF0F7] w-3/12 lg:w-[104px] font-[400] text-[#2b2b2b] text-[16px] border border-[#CCCCCC] outline-none text-center rounded-[10px]"
           />{" "}
           <input
             type="number"
@@ -117,7 +117,7 @@ const Registration_Form = () => {
             maxLength={2}
             value={registerInfo.month}
             onChange={handleChange}
-            className="h-[50px] bg-[#EDF0F7] w-[104px] font-[400] text-[#2b2b2b] text-[16px] border border-[#CCCCCC] outline-none text-center rounded-[10px]"
+            className="h-[50px] bg-[#EDF0F7] w-3/12 lg:w-[104px] font-[400] text-[#2b2b2b] text-[16px] border border-[#CCCCCC] outline-none text-center rounded-[10px]"
           />{" "}
           <input
             type="number"
@@ -127,12 +127,12 @@ const Registration_Form = () => {
             maxLength={4}
             value={registerInfo.year}
             onChange={handleChange}
-            className="h-[50px] bg-[#EDF0F7] w-[123px] font-[400] text-[#2b2b2b] text-[16px] border border-[#CCCCCC] outline-none text-center rounded-[10px]"
+            className="h-[50px] bg-[#EDF0F7] w-4/12 lg:w-[123px] font-[400] text-[#2b2b2b] text-[16px] border border-[#CCCCCC] outline-none text-center rounded-[10px]"
           />{" "}
         </div>
       </div>
 
-      <div className="flex flex-col gap-2 my-2">
+      <div className="flex flex-col gap-2 my-2 ">
         <label htmlFor="" className="text-[#2B2B2B] font-[500] text-[18px] ">
           {" "}
           Gender
