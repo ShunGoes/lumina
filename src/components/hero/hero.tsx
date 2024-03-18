@@ -14,7 +14,7 @@ const Hero = () => {
   return (
     <div className="hero relative w-full z-100  h-full text-white flex justify-center items-center">
       <div className=" h-[446px] w-[386px]  lg:w-[808px] lg:h-[378px] flex flex-col justify-around">
-        <div className="h-[200px] z-10  leading-[80px] flex flex-col justify-around">
+        <div className=" h-[180px] lg:h-[200px] z-10  lg:leading-[80px] flex flex-col justify-around">
           <h2 className="font-[700] text-[33px] lg:text-[70px]  leading-10  text-center">
             <span className="text-[#006DF8]">Discover</span>  Your Perfect
           </h2>

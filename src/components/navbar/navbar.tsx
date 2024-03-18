@@ -59,7 +59,7 @@ const Navbar = () => {
     <nav className="h-[68px]   nav  lg:h-[90px] lg:flex items-center justify-center">
       <div className=" flex  justify-between items-center w-11/12 mx-auto h-full lg:h-[56px] lg:w-10/12 ">
         <div className="flex items-center">
-          <img src={Helper.Logo} alt="" className="border-4 border-red-700" />
+          <img src={Helper.Logo} alt="" className="" />
           <h3 className="font-[800] text-[21.91px] text-[#fff] lg:text-[30px]">
             Lumina
           </h3>
