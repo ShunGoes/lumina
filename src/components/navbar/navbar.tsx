@@ -36,7 +36,6 @@ const Navbar = () => {
   // open hamburger menu for small screens
   const openHamburger = () => {
     setIsOpen(!isOpen);
-    console.log("hello");
   };
 
   // modal styles
@@ -90,7 +89,7 @@ const Navbar = () => {
             <p className="font-[700] text-[#FFFFFF]">Log in with Facebook</p>
           </div>
         </div>
-        {isOpen && <Nav_Dropdown />}
+        {isOpen && <Nav_Dropdown isOpen={isOpen} />}
       </div>
 
       <Modal
