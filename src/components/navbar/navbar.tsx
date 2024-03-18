@@ -135,7 +135,7 @@ const Navbar = () => {
                 }}
               >
                 {/* <GoogleLoginButton /> */}
-                <div className="flex w-[367px] h-[58px] gap-[5px] py-[10px] px-[24px] border-4 rounded-[32px] border-[#CCCCCC] ">
+                <div className="flex w-[367px] cursor-pointer h-[58px] gap-[5px] py-[10px] px-[24px] border-4 rounded-[32px] border-[#CCCCCC] ">
                   <img src={Helper.Google} alt="" />
                   <p className="font-[700] text-[18px] leading-[#808080] text-[#808080] text-center  w-full ">
                     Continue with Google
@@ -154,7 +154,7 @@ const Navbar = () => {
                   setFormError(err);
                 }}
               >
-                <div className="flex w-[367px] h-[58px] gap-[5px] py-[10px] px-[24px] border-4 rounded-[32px] border-[#CCCCCC] ">
+                <div className="flex w-[367px] h-[58px] cursor-pointer gap-[5px] py-[10px] px-[24px] border-4 rounded-[32px] border-[#CCCCCC] ">
                   <img src={Helper.Facebook} alt="" />
                   <p className="font-[700] text-[18px] leading-[#808080] text-[#808080] text-center  w-full ">
                     Log in with Facebook
