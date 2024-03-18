@@ -30,5 +30,17 @@ export interface Auth_Context_Type {
     setLoginInfo: React.Dispatch<React.SetStateAction<EmailAndPasswordType>>,
   setRegisterInfo: React.Dispatch<React.SetStateAction<RegisterUserInfo>>,
   formError: null | {[key: string]: unknown},
-  registerInfo: RegisterUserInfo
+  registerInfo: RegisterUserInfo,
+  social_user: {
+    name: string;
+    email: string;
+},
+set_social_user: React.Dispatch<React.SetStateAction<{
+  name: string;
+  email: string;
+}>>,
+setFormError: React.Dispatch<React.SetStateAction<null>>,
+handle_signin_with_social: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>
   }
+
+  

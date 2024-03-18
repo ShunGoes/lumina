@@ -29,3 +29,28 @@ export const authenticate_user = async (
     return error_object;
   }
 };
+
+export const sign_in_with_social = async (body: string,url: string) => {
+
+  const fetch_body = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body,
+  };
+
+  try {
+    const response = await fetch(`${baseUrl}/${url}`, fetch_body);
+
+    const data = await response.json();
+
+    return data;
+
+  } catch (error) {
+    // create an error object
+    let error_object = { error: true, message: error };
+
+    return error_object;
+  }
+}

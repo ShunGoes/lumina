@@ -16,7 +16,7 @@ const Nav_Dropdown = () => {
 
     
   return (
-    <div className='border-4 border-blue-500 w-full right-0  z-20 left-0 absolute top-[4rem] lg:hidden bg-black text-white '>
+    <div className='border-4 border-blue-500 w-4/5 right-0  z-20  absolute top-[4.5rem] lg:hidden bg-black text-white '>
 
     <AnimatePresence>
         <motion.div 
@@ -24,20 +24,20 @@ const Nav_Dropdown = () => {
             animate="visible"
             variants={parentVariant}
             exit="remove"
-        className=' h-[20rem] '>
+        className=' h-[20rem] flex flex-col justify-around'>
             <motion.div 
             variants={chiildVariant}
-            className='w-10/12 mx-auto border-4 h-[5rem] border-red-500'>
+            className='w-10/12 mx-auto border-4 h-[4rem] border-red-500'>
+                <h2>Sign in with Facebook</h2>
+            </motion.div>
+            <motion.div 
+            variants={chiildVariant}
+            className='w-10/12 mx-auto border-4 h-[4rem] border-red-500'>
 
             </motion.div>
             <motion.div 
             variants={chiildVariant}
-            className='w-10/12 mx-auto border-4 h-[5rem] border-red-500'>
-
-            </motion.div>
-            <motion.div 
-            variants={chiildVariant}
-            className='w-10/12 mx-auto border-4 h-[5rem] border-red-500'>
+            className='w-10/12 mx-auto border-4 h-[4rem] border-red-500'>
             </motion.div>
         </motion.div>
     </AnimatePresence>

@@ -1,17 +1,23 @@
 import Helper from "../../helper/helper";
-import { useState } from "react";
+import {  useState, useContext } from "react";
 import { Modal } from "react-responsive-modal";
 import { FaTimes } from "react-icons/fa";
 
+// @ts-ignore
+import { LoginSocialGoogle, LoginSocialFacebook } from "reactjs-social-login";
 import "./nav.css";
 import Nav_Dropdown from "./nav-dropdown";
+import { Auth_Context } from "../../context/auth.context";
 
 const Navbar = () => {
   const [showModal, setShowModal] = useState(false);
   const [showOhoneLoginMModal, setShowPhoneModal] = useState(false);
-
   const [isOpen, setIsOpen] = useState(false);
 
+  const { set_social_user, setFormError } =
+    useContext(Auth_Context)!;
+
+  //  handles interactions with modals
   const handle_show_modal = () => {
     setShowModal(true);
   };
@@ -26,10 +32,14 @@ const Navbar = () => {
   const close_phone_modal = () => {
     setShowPhoneModal(false);
   };
+
+  // open hamburger menu for small screens
   const openHamburger = () => {
     setIsOpen(!isOpen);
     console.log("hello");
   };
+
+  // modal styles
   const overlayStyles = {
     background: "rgba(0,0,0,0.7)",
   };
@@ -44,7 +54,8 @@ const Navbar = () => {
     width: "547px",
     borderRadius: "10px",
     backgroundColor: "#fff",
-  }
+  };
+
   return (
     <nav className="h-[68px]   nav  lg:h-[90px] lg:flex items-center justify-center">
       <div className=" flex  justify-between items-center w-11/12 mx-auto h-full lg:h-[56px] lg:w-10/12 ">
@@ -110,18 +121,47 @@ const Navbar = () => {
             </div>
 
             <div className="flex flex-col lg:gap-5 items-center">
-              <div className="flex w-[367px] h-[58px] gap-[5px] py-[10px] px-[24px] border-4 rounded-[32px] border-[#CCCCCC] ">
-                <img src={Helper.Google} alt="" />
-                <p className="font-[700] text-[18px] leading-[#808080] text-[#808080] text-center  w-full ">
-                  Continue with Google
-                </p>
-              </div>
-              <div className="flex w-[367px] h-[58px] gap-[5px] py-[10px] px-[24px] border-4 rounded-[32px] border-[#CCCCCC] ">
-                <img src={Helper.Facebook} alt="" />
-                <p className="font-[700] text-[18px] leading-[#808080] text-[#808080] text-center  w-full ">
-                  Log in with Facebook
-                </p>
-              </div>
+              <LoginSocialGoogle
+                isOnlyGetToken={false}
+                className=""
+                client_id={import.meta.env.VITE_CLIENT_ID}
+                scope="https://www.googleapis.com/auth/userinfo.email"
+                onResolve={({ data }: any) => {
+                  const { email, given_name } = data;
+                  set_social_user({ name: given_name, email });
+                }}
+                onReject={(err: any) => {
+                  setFormError(err);
+                }}
+              >
+                {/* <GoogleLoginButton /> */}
+                <div className="flex w-[367px] h-[58px] gap-[5px] py-[10px] px-[24px] border-4 rounded-[32px] border-[#CCCCCC] ">
+                  <img src={Helper.Google} alt="" />
+                  <p className="font-[700] text-[18px] leading-[#808080] text-[#808080] text-center  w-full ">
+                    Continue with Google
+                  </p>
+                </div>
+              </LoginSocialGoogle>
+              <LoginSocialFacebook
+                appId={import.meta.env.VITE_FACEBOOK_APP_ID}
+                fieldsProfile={`id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender`}
+                redirect_url={`/explore`}
+                onResolve={({ data }: any) => {
+                  console.log(data);
+                }}
+                onReject={(err: any) => {
+                  console.log('an error occured while processing your request')
+                  setFormError(err);
+                }}
+              >
+                <div className="flex w-[367px] h-[58px] gap-[5px] py-[10px] px-[24px] border-4 rounded-[32px] border-[#CCCCCC] ">
+                  <img src={Helper.Facebook} alt="" />
+                  <p className="font-[700] text-[18px] leading-[#808080] text-[#808080] text-center  w-full ">
+                    Log in with Facebook
+                  </p>
+                </div>
+              </LoginSocialFacebook>
+
               <div
                 className="flex w-[367px] h-[58px] gap-[5px] py-[10px] px-[24px] border-4 rounded-[32px] border-[#CCCCCC] "
                 onClick={go_to_phone_modal}
@@ -155,7 +195,7 @@ const Navbar = () => {
             </div>
             <div className="h-[86px] w-11/12 mx-auto  flex justify-center gap-4">
               <div className="w-[120px] flex flex-col gap-3">
-                <label htmlFor="" className="font-[400] text-[16px]" >
+                <label htmlFor="" className="font-[400] text-[16px]">
                   Country
                 </label>
                 <input
@@ -164,7 +204,10 @@ const Navbar = () => {
                 />
               </div>
               <div className="w-[249px] flex flex-col gap-3">
-                <label htmlFor="" className="text-[16px] font-[400] "> Phone Number</label>
+                <label htmlFor="" className="text-[16px] font-[400] ">
+                  {" "}
+                  Phone Number
+                </label>
                 <input
                   type="phone"
                   className="w-[249px] h-[46px] outline-none rounded-[5px] border border-[#80B6FB] text-[#CCE2FE38] px-4 "
@@ -172,7 +215,9 @@ const Navbar = () => {
               </div>
             </div>
             <p className="w-11/12 mx-auto pl-3 text-[14px] my-[2rem] ">
-            when you tab <span className="text-[#006DF8]"> continue  </span>  you will be sent a text with a verification code to your mobile number. The verification code number can be used to log in.
+              when you tab <span className="text-[#006DF8]"> continue </span>{" "}
+              you will be sent a text with a verification code to your mobile
+              number. The verification code number can be used to log in.
             </p>
 
             <button className="w-[261px] h-[58px] rounded-[32px] py-[10px] px-[24px] bg-[#CCCCCCBD] font-[700] text-[18px] text-[#808080] ">
