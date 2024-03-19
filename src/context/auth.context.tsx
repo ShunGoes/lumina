@@ -11,7 +11,7 @@ export const Auth_Context = createContext<Auth_Context_Type | null>(null);
 
 export const Auth_Context_Provider = ({ children }: Provider_Prop) => {
   const [user, setUser] = useState<UserType>(null);
-  const [formError, setFormError] = useState(null);
+  const [formError, setFormError] = useState<null | {[key: string]: unknown}>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [loginInfo, setLoginInfo] = useState({
     email: "",

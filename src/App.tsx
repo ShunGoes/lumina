@@ -6,6 +6,7 @@ import Loading from './components/loading'
 import Explore_Layout from './layout/explore'
 import Explore_Users from './pagges/explore-users/explore-users'
 import Test from './pagges/tinder/test'
+import Terms_And_Policy from './pagges/policy/policy'
 
 function App() {
   const Home = lazy(() => import('./pagges/home/home'))
@@ -21,6 +22,7 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/test' element={<Test />} />
         <Route path='/tinder' element={<Tinder />} />
+        <Route path='/policy' element={<Terms_And_Policy />} />
         <Route path='/explore' element={<Explore_Layout />} >
           <Route index element={<Explore_Users />} />
         </Route>
