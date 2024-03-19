@@ -8,6 +8,7 @@ import { LoginSocialGoogle, LoginSocialFacebook } from "reactjs-social-login";
 import "./nav.css";
 import Nav_Dropdown from "./nav-dropdown";
 import { Auth_Context } from "../../context/auth.context";
+import { signInWithFacebookPopup, signInWithGooglePopup } from "../../utils/firebase/firebase.config";
 
 const Navbar = () => {
   const [showModal, setShowModal] = useState(false);
@@ -37,6 +38,32 @@ const Navbar = () => {
   const openHamburger = () => {
     setIsOpen(!isOpen);
   };
+
+  const get_facebook_signup_details = async () => {
+    try{
+      const response = await signInWithFacebookPopup()
+  
+      const {displayName, email} = response.user
+  
+      if(typeof displayName === 'string' && typeof email === 'string'){
+        const name = displayName?.split(' ')[0]
+        set_social_user({name,email})
+      }
+    } catch(err){
+      setFormError({error: err})
+    }
+   }
+
+   const get_google_signup_details = async () => {
+    const response = await signInWithGooglePopup()
+
+    const {displayName, email} = response.user
+
+    if(typeof displayName === 'string' && typeof email === 'string'){
+      const name = displayName?.split(' ')[0]
+      set_social_user({name,email})
+    }
+   }
 
   // modal styles
   const overlayStyles = {
@@ -120,7 +147,7 @@ const Navbar = () => {
             </div>
 
             <div className="flex flex-col lg:gap-5 items-center">
-              <LoginSocialGoogle
+              {/* <LoginSocialGoogle
                 isOnlyGetToken={false}
                 className=""
                 client_id={import.meta.env.VITE_CLIENT_ID}
@@ -132,34 +159,22 @@ const Navbar = () => {
                 onReject={(err: any) => {
                   setFormError(err);
                 }}
-              >
+              > */}
                 {/* <GoogleLoginButton /> */}
-                <div className="flex w-[367px] cursor-pointer h-[58px] gap-[5px] py-[10px] px-[24px] border-4 rounded-[32px] border-[#CCCCCC] ">
+                <div onClick={get_google_signup_details} className="flex w-[367px] cursor-pointer h-[58px] gap-[5px] py-[10px] px-[24px] border-4 rounded-[32px] border-[#CCCCCC] ">
                   <img src={Helper.Google} alt="" />
                   <p className="font-[700] text-[18px] leading-[#808080] text-[#808080] text-center  w-full ">
                     Continue with Google
                   </p>
                 </div>
-              </LoginSocialGoogle>
-              <LoginSocialFacebook
-                appId={import.meta.env.VITE_FACEBOOK_APP_ID}
-                fieldsProfile={`id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender`}
-                redirect_url={`/explore`}
-                onResolve={({ data }: any) => {
-                  console.log(data);
-                }}
-                onReject={(err: any) => {
-                  console.log('an error occured while processing your request')
-                  setFormError(err);
-                }}
-              >
-                <div className="flex w-[367px] h-[58px] cursor-pointer gap-[5px] py-[10px] px-[24px] border-4 rounded-[32px] border-[#CCCCCC] ">
+              {/* </LoginSocialGoogle> */}
+             
+                <div onClick={get_facebook_signup_details} className="flex w-[367px] h-[58px] cursor-pointer gap-[5px] py-[10px] px-[24px] border-4 rounded-[32px] border-[#CCCCCC] ">
                   <img src={Helper.Facebook} alt="" />
                   <p className="font-[700] text-[18px] leading-[#808080] text-[#808080] text-center  w-full ">
                     Log in with Facebook
                   </p>
                 </div>
-              </LoginSocialFacebook>
 
               <div
                 className="flex w-[367px] h-[58px] gap-[5px] py-[10px] px-[24px] border-4 rounded-[32px] border-[#CCCCCC] "

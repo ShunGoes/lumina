@@ -39,7 +39,7 @@ set_social_user: React.Dispatch<React.SetStateAction<{
   name: string;
   email: string;
 }>>,
-setFormError: React.Dispatch<React.SetStateAction<null>>,
+setFormError: React.Dispatch<React.SetStateAction<null | {[key: string]: unknown}>>,
 handle_signin_with_social: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>
   }
 

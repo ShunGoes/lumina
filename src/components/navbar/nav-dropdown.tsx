@@ -4,11 +4,16 @@ import { useContext, useState } from "react";
 // @ts-ignore
 import { LoginSocialGoogle, LoginSocialFacebook } from "reactjs-social-login";
 import { Auth_Context } from "../../context/auth.context";
+import {
+  signInWithFacebookPopup,
+  signInWithGooglePopup,
+} from "../../utils/firebase/firebase.config";
 
 const parentVariant: Variants = {
-  hidden: { opacity: 0, height:0 },
+  hidden: { opacity: 0, height: 0 },
   visible: {
-    opacity: 1, height: '16rem',
+    opacity: 1,
+    height: "16rem",
     transition: { duration: 0.4, when: "beforeChildren", staggerChildren: 0.4 },
   },
   remove: { opacity: 0 },
@@ -24,8 +29,34 @@ interface NavProp {
 
 const Nav_Dropdown = ({ isOpen }: NavProp) => {
   const [show] = useState(isOpen);
-  const {setFormError, set_social_user} = useContext(Auth_Context)!
+  const { setFormError, set_social_user } = useContext(Auth_Context)!;
 
+  const get_facebook_signup_details = async () => {
+    try {
+      const response = await signInWithFacebookPopup();
+        
+      const { displayName, email } = response.user;
+
+      if (typeof displayName === "string" && typeof email === "string") {
+        const name = displayName.split(" ")[0];
+        set_social_user({ name, email });
+        
+      }
+    } catch (err) {
+      setFormError({ error: err });
+    }
+  };
+
+  const get_google_signup_details = async () => {
+    const response = await signInWithGooglePopup();
+
+    const { displayName, email } = response.user;
+
+    if (typeof displayName === "string" && typeof email === "string") {
+      const name = displayName?.split(" ")[0];
+      set_social_user({ name, email });
+    }
+  };
   return (
     <div className=" w-full right-0  z-20  absolute top-[4.5rem] lg:hidden bg-black text-white ">
       <AnimatePresence>
@@ -39,56 +70,23 @@ const Nav_Dropdown = ({ isOpen }: NavProp) => {
           >
             <motion.div
               variants={chiildVariant}
-              className="w-10/12 mx-auto h-[2rem]  "
+              onClick={get_google_signup_details}
+              className="w-10/12 mx-auto h-[2rem] py-3 flex items-center gap-4 "
             >
-              <LoginSocialGoogle
-                isOnlyGetToken={false}
-                className=" py-3 flex items-center gap-4"
-                client_id={import.meta.env.VITE_CLIENT_ID}
-                scope="https://www.googleapis.com/auth/userinfo.email"
-                onResolve={({ data }: any) => {
-                    const { email, given_name } = data;
-                    console.log(email, given_name);
-                      set_social_user({ name: given_name, email });
-                }}
-                onReject={(err: any) => {
-                    console.log(err);
-                      setFormError(err);
-                }}
-                >
-                  <img src={helper.Google} alt="" />{" "}
-                  <span className="font-[700] text-[18px] text-white">
-                    Sign in with Google
-                  </span>
-               
-              </LoginSocialGoogle>
+              <img src={helper.Google} alt="" />{" "}
+              <span className="font-[700] text-[18px] text-white">
+                Sign in with Google
+              </span>
             </motion.div>
             <motion.div
               variants={chiildVariant}
+              onClick={get_facebook_signup_details}
               className="w-10/12 mx-auto  h-[2rem]  flex items-center gap-4"
             >
-           
-               <LoginSocialFacebook
-                 fieldsProfile={`id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender`}
-                className=" py-3 flex items-center gap-4"
-                appId={import.meta.env.VITE_FACEBOOK_APP_ID}
-                redirect_url={`https://lumina-kohl.vercel.app/register`}
-                onResolve={({ data }: any) => {
-                    // const { email, given_name } = data;
-                    console.log(data);
-                    //   set_social_user({ name: given_name, email });
-                }}
-                onReject={(err: any) => {
-                    console.log(err);
-                      setFormError(err);
-                }}
-                >
-                     <img src={helper.Facebook} alt="" />{" "}
+              <img src={helper.Facebook} alt="" />{" "}
               <span className="font-[700] text-[18px] text-white">
                 Sign in with Facebook
               </span>
-               
-              </LoginSocialFacebook>
             </motion.div>
             <motion.div
               variants={chiildVariant}
@@ -97,7 +95,7 @@ const Nav_Dropdown = ({ isOpen }: NavProp) => {
               <span className="font-[700] text-[18px]   text-white">
                 Terms and Policy
               </span>
-            </motion.div> 
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
