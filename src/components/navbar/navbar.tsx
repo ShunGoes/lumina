@@ -1,14 +1,15 @@
-import Helper from "../../helper/helper";
 import {  useState, useContext } from "react";
 import { Modal } from "react-responsive-modal";
 import { FaTimes } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
-// @ts-ignore
-import { LoginSocialGoogle, LoginSocialFacebook } from "reactjs-social-login";
+// relative imports
+import Helper from "../../helper/helper";
 import "./nav.css";
 import Nav_Dropdown from "./nav-dropdown";
 import { Auth_Context } from "../../context/auth.context";
 import { signInWithFacebookPopup, signInWithGooglePopup } from "../../utils/firebase/firebase.config";
+
 
 const Navbar = () => {
   const [showModal, setShowModal] = useState(false);
@@ -17,6 +18,13 @@ const Navbar = () => {
 
   const { set_social_user, setFormError } =
     useContext(Auth_Context)!;
+
+  const navigate = useNavigate()
+
+
+  const go_to_register_page = () => {
+    navigate("/register")
+  }
 
   //  handles interactions with modals
   const handle_show_modal = () => {
@@ -46,8 +54,9 @@ const Navbar = () => {
       const {displayName, email} = response.user
   
       if(typeof displayName === 'string' && typeof email === 'string'){
-        const name = displayName?.split(' ')[0]
-        set_social_user({name,email})
+        const firstName = displayName?.split(' ')[0]
+        set_social_user({firstName,email})
+        go_to_register_page()
       }
     } catch(err){
       setFormError({error: err})
@@ -55,13 +64,19 @@ const Navbar = () => {
    }
 
    const get_google_signup_details = async () => {
-    const response = await signInWithGooglePopup()
+    try{
+      const response = await signInWithGooglePopup()
+  
+      const {displayName, email} = response.user
+  
+      if(typeof displayName === 'string' && typeof email === 'string'){
+        const firstName = displayName?.split(' ')[0]
+        set_social_user({firstName,email})
+        go_to_register_page()
+      }
 
-    const {displayName, email} = response.user
-
-    if(typeof displayName === 'string' && typeof email === 'string'){
-      const name = displayName?.split(' ')[0]
-      set_social_user({name,email})
+    } catch(err){
+      setFormError({error: err})
     }
    }
 
@@ -116,7 +131,7 @@ const Navbar = () => {
             <p className="font-[700] text-[#FFFFFF]">Log in with Facebook</p>
           </div>
         </div>
-        {isOpen && <Nav_Dropdown isOpen={isOpen} />}
+        {isOpen && <Nav_Dropdown />}
       </div>
 
       <Modal
@@ -147,27 +162,12 @@ const Navbar = () => {
             </div>
 
             <div className="flex flex-col lg:gap-5 items-center">
-              {/* <LoginSocialGoogle
-                isOnlyGetToken={false}
-                className=""
-                client_id={import.meta.env.VITE_CLIENT_ID}
-                scope="https://www.googleapis.com/auth/userinfo.email"
-                onResolve={({ data }: any) => {
-                  const { email, given_name } = data;
-                  set_social_user({ name: given_name, email });
-                }}
-                onReject={(err: any) => {
-                  setFormError(err);
-                }}
-              > */}
-                {/* <GoogleLoginButton /> */}
                 <div onClick={get_google_signup_details} className="flex w-[367px] cursor-pointer h-[58px] gap-[5px] py-[10px] px-[24px] border-4 rounded-[32px] border-[#CCCCCC] ">
                   <img src={Helper.Google} alt="" />
                   <p className="font-[700] text-[18px] leading-[#808080] text-[#808080] text-center  w-full ">
                     Continue with Google
                   </p>
                 </div>
-              {/* </LoginSocialGoogle> */}
              
                 <div onClick={get_facebook_signup_details} className="flex w-[367px] h-[58px] cursor-pointer gap-[5px] py-[10px] px-[24px] border-4 rounded-[32px] border-[#CCCCCC] ">
                   <img src={Helper.Facebook} alt="" />

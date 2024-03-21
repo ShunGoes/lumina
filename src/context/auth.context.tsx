@@ -11,21 +11,20 @@ export const Auth_Context = createContext<Auth_Context_Type | null>(null);
 
 export const Auth_Context_Provider = ({ children }: Provider_Prop) => {
   const [user, setUser] = useState<UserType>(null);
-  const [formError, setFormError] = useState<null | {[key: string]: unknown}>(null);
+  const [formError, setFormError] = useState<null | {[key: string]: unknown} | boolean>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [loginInfo, setLoginInfo] = useState({
     email: "",
     password: "",
   });
   const [social_user, set_social_user] = useState({
-    name: "",
+    firstName: "",
     email: "",
   });
 
   const [registerInfo, setRegisterInfo] = useState({
     email: "",
     first_name: "",
-    last_name: "",
     day: "",
     month: "",
     year: "",
@@ -48,14 +47,14 @@ export const Auth_Context_Provider = ({ children }: Provider_Prop) => {
     setIsLoading(true);
     setFormError(null);
 
-    const response = await sign_in_with_social(JSON.stringify(social_user), "");
+    const response = await sign_in_with_social(JSON.stringify(social_user));
 
     setIsLoading(false);
 
     if (response?.error) {
-      return setFormError(response?.error?.message);
+      return setFormError(response?.error);
     }
-    console.log(response)
+    return response
   };
 
   // this function submits the registered user form
@@ -104,7 +103,9 @@ export const Auth_Context_Provider = ({ children }: Provider_Prop) => {
 
   useEffect(() => {
     async function auth_social_signup(){
-      await handle_signin_with_social()
+     const response = await handle_signin_with_social()
+     setUser(response)
+     localStorage.setItem("lumina-user", JSON.stringify(response))
     }
 
     auth_social_signup()

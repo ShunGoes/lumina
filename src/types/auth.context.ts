@@ -12,7 +12,6 @@ interface EmailAndPasswordType{
 interface RegisterUserInfo {
   email: string,
   first_name: string,
-  last_name: string,
   day: string,
   month: string,
   year: string,
@@ -29,17 +28,17 @@ export interface Auth_Context_Type {
     handle_login_user: (e: React.FormEvent<HTMLFormElement>) => Promise<void> ,
     setLoginInfo: React.Dispatch<React.SetStateAction<EmailAndPasswordType>>,
   setRegisterInfo: React.Dispatch<React.SetStateAction<RegisterUserInfo>>,
-  formError: null | {[key: string]: unknown},
+  formError: null | boolean | {[key: string]: unknown},
   registerInfo: RegisterUserInfo,
   social_user: {
-    name: string;
+    firstName: string;
     email: string;
 },
 set_social_user: React.Dispatch<React.SetStateAction<{
-  name: string;
+  firstName: string;
   email: string;
 }>>,
-setFormError: React.Dispatch<React.SetStateAction<null | {[key: string]: unknown}>>,
+setFormError: React.Dispatch<React.SetStateAction<null | boolean | {[key: string]: unknown}>>,
 handle_signin_with_social: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>
   }
 

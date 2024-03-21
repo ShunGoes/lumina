@@ -1,5 +1,5 @@
-export const baseUrl = "";
-
+const baseUrl = "";
+ const social_auth_url = "https://lumina-be.onrender.com/auth-login"
 
 export const authenticate_user = async (
   url: string,
@@ -30,7 +30,7 @@ export const authenticate_user = async (
   }
 };
 
-export const sign_in_with_social = async (body: string,url: string) => {
+export const sign_in_with_social = async (body: string) => {
 
   const fetch_body = {
     method: "POST",
@@ -41,11 +41,12 @@ export const sign_in_with_social = async (body: string,url: string) => {
   };
 
   try {
-    const response = await fetch(`${baseUrl}/${url}`, fetch_body);
+    const response = await fetch(`${social_auth_url}`, fetch_body);
 
     const data = await response.json();
 
-    return data;
+    console.log(data)
+    return data
 
   } catch (error) {
     // create an error object
