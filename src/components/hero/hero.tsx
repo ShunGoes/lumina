@@ -1,14 +1,16 @@
 import "./hero.css";
 import helper from "../../helper/helper";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { Auth_Context } from "../../context/auth.context";
 
 
 const Hero = () => {
+const {setShowModal} = useContext(Auth_Context)!
+  // const navigate = useNavigate()
 
-  const navigate = useNavigate()
-
-  const go_to_register_page = () => {
-    navigate('/register')
+  const create_account_modal = () => {
+    setShowModal(true)
   }
 
   return (
@@ -27,7 +29,7 @@ const Hero = () => {
         </div>
 
         <div className="flex flex-col justify-around items-center gap-[10px]">
-          <div className="bg-[#F74887] z-10 py-[10px] px-[24px] cursor-pointer rounded-[32px] h-[58px] w-11/12 flex justify-center items-center  gap-[10px] lg:w-[220px] " onClick={go_to_register_page}>
+          <div className="bg-[#F74887] z-10 py-[10px] px-[24px] cursor-pointer rounded-[32px] h-[58px] w-11/12 flex justify-center items-center  gap-[10px] lg:w-[220px] " onClick={create_account_modal}>
             <span className="font-[700] text-white"> create  account </span> <img src={helper.Arrow_Right} alt="" />
           </div>
           <div className="bg-[transparent] lg:hidden border-2 border-[#fff] cursor-pointer z-10 py-[10px] px-[24px] rounded-[32px] h-[58px] w-11/12 flex justify-center items-center  ">

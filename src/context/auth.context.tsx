@@ -6,6 +6,8 @@ import {
   UserType,
   Provider_Prop,
 } from "../types/auth.context";
+import {ImgType} from '../types/auth.context'
+
 
 export const Auth_Context = createContext<Auth_Context_Type | null>(null);
 
@@ -31,15 +33,31 @@ export const Auth_Context_Provider = ({ children }: Provider_Prop) => {
     gender: "",
     passion: new Set<string>(),
   });
+  const [previewImage, setPreviewImage] = useState<ImgType[]>([
+    { imgUrl: "", frame: "first_frame" },
+    { imgUrl: "", frame: "second_frame" },
+    { imgUrl: "", frame: "third_frame" },
+    { imgUrl: "", frame: "fourth_frame" },
+    { imgUrl: "", frame: "fifth_frame" },
+    { imgUrl: "", frame: "sixth_frame" },
+  ]);
+  const [showModal, setShowModal] = useState(false);
 
-  useEffect(() => {
-    const user = localStorage.getItem("Chatty");
-    if (user) {
-      setUser(JSON.parse(user));
-    } else {
-      setUser(null);
-    }
-  }, []);
+
+  const passion = Array.from(registerInfo.passion)
+  // console.log(previewImage[0].imgUrl)
+
+  // useEffect(() => {
+  //   const storedUser = localStorage.getItem("lumina-user") ;
+  //   console.log(storedUser )
+  //   if (typeof  storedUser !== undefined) {
+  //     setUser(JSON.parse(storedUser));
+  //     return
+  //   } else {``
+  //     setUser(storedUser);
+  //   }
+  // }, []);
+
 
   const handle_signin_with_social = async (
   ) => {
@@ -55,29 +73,37 @@ export const Auth_Context_Provider = ({ children }: Provider_Prop) => {
       return setFormError(response?.error);
     }
     return response
+
   };
+  const register_user_details = {
+    email: registerInfo.email,
+    firstName: registerInfo.first_name,
+    birthday: `${registerInfo.day}-${registerInfo.month}-${registerInfo.year}`,
+    gender: registerInfo.gender,
+    pic1: previewImage[0].imgUrl,
+    pic2: previewImage[1].imgUrl,
+    passions: [passion[0], passion[1],passion[2],passion[3]]
+  }
 
   // this function submits the registered user form
-  const handle_register_user = useCallback(
-    async (e: React.FormEvent<HTMLFormElement>) => {
+  const handle_register_user = 
+    async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.preventDefault();
 
       setIsLoading(true);
       setFormError(null);
 
-      let response = await authenticate_user("/", JSON.stringify(registerInfo));
+      let response = await authenticate_user(JSON.stringify(register_user_details));
 
       setIsLoading(false);
 
       if (response?.error) {
-        return setFormError(response?.error?.message);
+        return setFormError(response?.error);
       }
 
-      localStorage.setItem("Chatty", JSON.stringify(response));
+      localStorage.setItem("lumina-user", JSON.stringify(response));
       setUser(response);
-    },
-    [registerInfo]
-  );
+    }
 
   //   this function handles the login component submit button
   const handle_login_user = useCallback(
@@ -87,15 +113,15 @@ export const Auth_Context_Provider = ({ children }: Provider_Prop) => {
       setIsLoading(true);
       setFormError(null);
 
-      let response = await authenticate_user("/", JSON.stringify(loginInfo));
+      let response = await authenticate_user( JSON.stringify(loginInfo));
 
       setIsLoading(false);
 
       if (response?.error) {
-        return setFormError(response?.error?.message);
+        return setFormError(response?.error);
       }
 
-      localStorage.setItem("Chatty", JSON.stringify(response));
+      localStorage.setItem("lumina-user", JSON.stringify(response));
       setUser(response);
     },
     []
@@ -104,12 +130,16 @@ export const Auth_Context_Provider = ({ children }: Provider_Prop) => {
   useEffect(() => {
     async function auth_social_signup(){
      const response = await handle_signin_with_social()
+
      setUser(response)
-     localStorage.setItem("lumina-user", JSON.stringify(response))
+    //  localStorage.setItem("lumina-user", JSON.stringify(response))
     }
 
     auth_social_signup()
-  }, [social_user])
+  }, [social_user]
+  )
+
+
   const value = {
     handle_register_user,
     handle_login_user,
@@ -124,6 +154,10 @@ export const Auth_Context_Provider = ({ children }: Provider_Prop) => {
     set_social_user,
     handle_signin_with_social,
     setFormError,
+    previewImage,
+    setPreviewImage,
+    showModal,
+    setShowModal,
   };
 
   return (

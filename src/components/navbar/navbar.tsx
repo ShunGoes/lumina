@@ -12,11 +12,10 @@ import { signInWithFacebookPopup, signInWithGooglePopup } from "../../utils/fire
 
 
 const Navbar = () => {
-  const [showModal, setShowModal] = useState(false);
   const [showOhoneLoginMModal, setShowPhoneModal] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
-  const { set_social_user, setFormError } =
+  const { set_social_user, setFormError, showModal, setShowModal } =
     useContext(Auth_Context)!;
 
   const navigate = useNavigate()
@@ -81,14 +80,14 @@ const Navbar = () => {
    }
 
   // modal styles
-  const overlayStyles = {
-    background: "rgba(0,0,0,0.7)",
-  };
+  // const overlayStyles = {
+  //   background: "rgba(0,0,0,0.7)",
+  //   border: "10px solid red"
+  // };
   const modalStyles = {
-    height: "616px",
-    width: "547px",
+    // height: "616px",
+    // width: "547px",
     borderRadius: "10px",
-    backgroundColor: "#fff",
   };
   const phoneModalStyles = {
     height: "500px",
@@ -138,45 +137,44 @@ const Navbar = () => {
         open={showModal}
         onClose={handle_close_modal}
         styles={{
-          overlay: overlayStyles,
           modal: modalStyles,
         }}
         center
       >
-        <div className="h-full w-full  flex justify-center items-center">
-          <div className="h-[499px] w-[409px] flex flex-col  lg:gap-3 items-center">
-            <img
+        <div className="  w-[300px] h-[465px] lg:w-[547px]  flex justify-center items-center">
+          <div className="w-full  mx-auto  lg:h-[400px] lg:w-[400px] flex flex-col justify-center lg:gap-3 items-center">
+            {/* <img
               src={Helper.Logo}
               alt="Lumina logo"
-              className="w-[106px] h-[106px]"
-            />
+              className="w-[106px] border-4 border-blue-500 h-[106px]"
+            /> */}
             <div className="text-center mb-3">
-              <h2 className="leading-[39px] font-[600] text-[30px] text-[#555555]  mb-2">
+              <h2 className="text-[25px] lg:leading-[39px] lg:font-[600] lg:text-[30px] lg:text-[#555555]  mb-2">
                 Create account
               </h2>
-              <p className="w-[378px] h-[42px] font-[500] leading-[20.8px] ">
+              <p className="w-[90%] mx-auto font-[300] lg:w-[378px] lg:h-[42px] lg:font-[500] lg:leading-[20.8px] ">
                 By clicking Log in, you agree to our{" "}
                 <span className="text-[#006DF8]">Terms</span> of Lumina Service
                 and <span className="text-[#006DF8]"> Privacy Policy </span> .
               </p>
             </div>
 
-            <div className="flex flex-col lg:gap-5 items-center">
-                <div onClick={get_google_signup_details} className="flex w-[367px] cursor-pointer h-[58px] gap-[5px] py-[10px] px-[24px] border-4 rounded-[32px] border-[#CCCCCC] ">
-                  <img src={Helper.Google} alt="" />
-                  <p className="font-[700] text-[18px] leading-[#808080] text-[#808080] text-center  w-full ">
+            <div className="flex flex-col gap-3  w-full mt-[1rem] lg:gap-5 items-center">
+                <div onClick={get_google_signup_details} className="flex w-full mx-auto lg:w-[367px] cursor-pointer h-[50px] lg:h-[58px] items-center px-[18px] gap-[5px] lg:py-[10px] lg:px-[24px] border-2 lg:border-4 rounded-[32px] border-[#CCCCCC] ">
+                  <img src={Helper.Google} alt="lumina google login" />
+                  <p className="font-[700] text-[16px] lg:font-[700] lg:text-[18px]  text-[#808080] text-center  w-full ">
                     Continue with Google
                   </p>
                 </div>
              
-                <div onClick={get_facebook_signup_details} className="flex w-[367px] h-[58px] cursor-pointer gap-[5px] py-[10px] px-[24px] border-4 rounded-[32px] border-[#CCCCCC] ">
+                <div onClick={get_facebook_signup_details} className="flex w-full mx-auto lg:w-[367px] cursor-pointer h-[50px] lg:h-[58px] items-center px-[18px] gap-[5px] lg:py-[10px] lg:px-[24px] border-2 lg:border-4 rounded-[32px] border-[#CCCCCC] ">
                   <img src={Helper.Facebook} alt="" />
-                  <p className="font-[700] text-[18px] leading-[#808080] text-[#808080] text-center  w-full ">
+                  <p className="font-[700] text-[16px] lg:font-[700] lg:text-[18px]  text-[#808080] text-center  w-full ">
                     Log in with Facebook
                   </p>
                 </div>
 
-              <div
+              {/* <div
                 className="flex w-[367px] h-[58px] gap-[5px] py-[10px] px-[24px] border-4 rounded-[32px] border-[#CCCCCC] "
                 onClick={go_to_phone_modal}
               >
@@ -184,7 +182,7 @@ const Navbar = () => {
                 <p className="font-[700] text-[18px] leading-[#808080] text-[#808080] text-center  w-full ">
                   Log in with Phone number
                 </p>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -193,7 +191,6 @@ const Navbar = () => {
         open={showOhoneLoginMModal}
         onClose={close_phone_modal}
         styles={{
-          overlay: overlayStyles,
           modal: phoneModalStyles,
         }}
         center
