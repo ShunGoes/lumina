@@ -1,14 +1,12 @@
-export const baseUrl = "";
-
+const baseUrl = "https://lumina-be.onrender.com";
 
 export const authenticate_user = async (
-  url: string,
   body: string
 ) => {
   
     // sends a userss data to the database for auth purppose
   const fetch_body = {
-    method: "POST",
+    method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
@@ -16,10 +14,10 @@ export const authenticate_user = async (
   };
 
   try {
-    const response = await fetch(`${baseUrl}/${url}`, fetch_body);
+    const response = await fetch(`${baseUrl}/register`, fetch_body);
 
     const data = await response.json();
-
+    console.log(data)
     return data;
 
   } catch (error) {
@@ -30,7 +28,7 @@ export const authenticate_user = async (
   }
 };
 
-export const sign_in_with_social = async (body: string,url: string) => {
+export const sign_in_with_social = async (body: string) => {
 
   const fetch_body = {
     method: "POST",
@@ -41,11 +39,12 @@ export const sign_in_with_social = async (body: string,url: string) => {
   };
 
   try {
-    const response = await fetch(`${baseUrl}/${url}`, fetch_body);
+    const response = await fetch(`${baseUrl}/auth-login`, fetch_body);
 
     const data = await response.json();
 
-    return data;
+    console.log(data)
+    return data
 
   } catch (error) {
     // create an error object

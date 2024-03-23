@@ -1,33 +1,24 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
 
 import "./register.css";
 import helper from "../../helper/helper";
 import Modal from "react-responsive-modal";
 import Upload_Modal from "../../components/upload_modal";
 import Registration_Form from "../../components/registration-form/register-form";
+import { Auth_Context } from "../../context/auth.context";
 
 // types and interfaces starts here
-
-type ImgType = Record<string, string | ArrayBuffer | null>;
 
 // types and interfaces ends here
 
 const Register_User = () => {
-    //    STATES
+  //    STATES
   const [showImageModal, setShowImageModal] = useState(false);
-  const [previewImage, setPreviewImage] = useState<ImgType[]>([
-    { imgUrl: "", frame: "first_frame" },
-    { imgUrl: "", frame: "second_frame" },
-    { imgUrl: "", frame: "third_frame" },
-    { imgUrl: "", frame: "fourth_frame" },
-    { imgUrl: "", frame: "fifth_frame" },
-    { imgUrl: "", frame: "sixth_frame" },
-  ]);
+
   const [number_of_picture, set_number_of_pics] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [domIndex, setDomIndex] = useState<number | null>(null);
-
-
+  const { previewImage, setPreviewImage, handle_register_user } = useContext(Auth_Context)!;
 
   // dynamically creating refs for our input elements
   const fileInputRef = Array.from({ length: 6 }, () =>
@@ -36,15 +27,6 @@ const Register_User = () => {
   const videoRef = Array.from({ length: 6 }, () =>
     useRef<HTMLVideoElement | null>(null)
   );
-  
-
-
-
- 
-
-
-
-
 
   //  this function fires a click event on the element with the ref depending on the index the function receives
   const handleFileInputChange = (index: number) => {
@@ -73,7 +55,6 @@ const Register_User = () => {
     }
   };
 
-
   //  these functions handle opening the camera and taking a photo
   const open_camera = async (index: number) => {
     setShowModal(false);
@@ -90,54 +71,50 @@ const Register_User = () => {
 
       setTimeout(() => {
         stream.getTracks().forEach((track) => track.stop());
-        setShowImageModal(false)
-
-      }, 56000)
+        setShowImageModal(false);
+      }, 56000);
     } catch (error) {
       console.log(`error accessing camera: ${error}`);
     }
   };
-  
+
   const capture_image = async (index: number) => {
     try {
       const canvas_element = document.createElement("canvas");
       const ctx = canvas_element?.getContext("2d");
-      
+
       const video_refernce = videoRef[index].current;
-      
+
       if (ctx && video_refernce) {
         canvas_element!.width = 100;
         canvas_element!.height = 100;
-        
+
         ctx?.drawImage(
           video_refernce!,
           0,
           0,
           canvas_element!.width,
           canvas_element!.height
-          );
-          
-          const result = canvas_element.toDataURL("image/jpg");
-          // console.log(result)
-          const updated_state_array = previewImage.map((obj, idx) =>
+        );
+
+        const result = canvas_element.toDataURL("image/jpg");
+        // console.log(result)
+        const updated_state_array = previewImage.map((obj, idx) =>
           idx === index ? { ...obj, imgUrl: result } : obj
-          );
-          
-          setPreviewImage(updated_state_array);
-          setShowModal(false);
-          setShowImageModal(false)
-        }
+        );
 
-        if(video_refernce){
-          video_refernce.srcObject = null
-        }
-      } catch (err) {
-        console.log(`An error occured on line 146. error type - ${err}`);
-        
+        setPreviewImage(updated_state_array);
+        setShowModal(false);
+        setShowImageModal(false);
       }
+
+      if (video_refernce) {
+        video_refernce.srcObject = null;
+      }
+    } catch (err) {
+      console.log(`An error occured on line 146. error type - ${err}`);
+    }
   };
-
-
 
   // helpers for modals
   const handle_open_modal = (index: number) => {
@@ -147,7 +124,6 @@ const Register_User = () => {
   const handle_close_modal = () => {
     setShowModal(false);
   };
-
 
   // console.log(number_of_picture);
   useEffect(() => {
@@ -173,7 +149,7 @@ const Register_User = () => {
         </div>
 
         <div className="grid grid-cols-1 gap-y-[2rem] lg:grid-cols-2 w-11/12 mx-auto justify-items-center ">
-        <div className="h-full w-full lg:w-11/12 col-span-1  lg:hidden">
+          <div className="h-full w-full lg:w-11/12 col-span-1  lg:hidden">
             <p className="font-[500] text-[22px] text-[#808080] mb-[1rem]">
               Profile Picture
             </p>
@@ -206,21 +182,21 @@ const Register_User = () => {
                       onChange={handleFileChange}
                     />
                     <div className=" w-full h-full relative">
-                    {obj?.imgUrl ? (
-                      <img
-                        src={helper.Edit_Icon}
-                        alt="edit pictures"
-                        className="absolute -bottom-3 -right-2 "
-                        onClick={() => handle_open_modal(index)}
-                      />
-                    ) : (
-                      <img
-                        src={helper.Add_Icon}
-                        alt="add pictures"
-                        className= " absolute -bottom-3 -right-2"
-                        onClick={() => handle_open_modal(index)}
-                      />
-                    )}
+                      {obj?.imgUrl ? (
+                        <img
+                          src={helper.Edit_Icon}
+                          alt="edit pictures"
+                          className="absolute -bottom-3 -right-2 "
+                          onClick={() => handle_open_modal(index)}
+                        />
+                      ) : (
+                        <img
+                          src={helper.Add_Icon}
+                          alt="add pictures"
+                          className=" absolute -bottom-3 -right-2"
+                          onClick={() => handle_open_modal(index)}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -232,9 +208,9 @@ const Register_User = () => {
               </p>
             )}
           </div>
-        {/* form starts here */}
-       <Registration_Form />
-       <div className="h-full w-full lg:w-11/12 col-span-1  hidden lg:block">
+          {/* form starts here */}
+          <Registration_Form />
+          <div className="h-full w-full lg:w-11/12 col-span-1  hidden lg:block">
             <p className="font-[500] text-[18px] text-[#808080] mb-[1rem]">
               Profile Picture
             </p>
@@ -267,21 +243,21 @@ const Register_User = () => {
                       onChange={handleFileChange}
                     />
                     <div className=" w-full h-full relative">
-                    {obj?.imgUrl ? (
-                      <img
-                        src={helper.Edit_Icon}
-                        alt="edit pictures"
-                        className="absolute -bottom-3 -right-2 "
-                        onClick={() => handle_open_modal(index)}
-                      />
-                    ) : (
-                      <img
-                        src={helper.Add_Icon}
-                        alt="add pictures"
-                        className= " absolute -bottom-3 -right-2"
-                        onClick={() => handle_open_modal(index)}
-                      />
-                    )}
+                      {obj?.imgUrl ? (
+                        <img
+                          src={helper.Edit_Icon}
+                          alt="edit pictures"
+                          className="absolute -bottom-3 -right-2 "
+                          onClick={() => handle_open_modal(index)}
+                        />
+                      ) : (
+                        <img
+                          src={helper.Add_Icon}
+                          alt="add pictures"
+                          className=" absolute -bottom-3 -right-2"
+                          onClick={() => handle_open_modal(index)}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -293,7 +269,7 @@ const Register_User = () => {
               </p>
             )}
           </div>
-         
+
           {showImageModal && (
             <div className="absolute top-0 bottom-0 left-0 right-0 h-[80vh] flex justify-center items-center  ">
               <div className="w-8/12 h-8/12  flex justify-between">
@@ -302,9 +278,20 @@ const Register_User = () => {
                   className="border rounded-[10px] "
                 />
                 <div className="flex flex-col gap-3">
-                <button className="w-[5rem]  h-[50px] bg-black text-white py-[10px]  rounded-[10px]  " onClick={() => capture_image(domIndex!)}> Capture</button>
-                <button className="w-[5rem]  h-[50px] bg-red-500 text-white py-[10px]  rounded-[10px]  " onClick={() => setShowImageModal(false)}> Cancel</button>
-
+                  <button
+                    className="w-[5rem]  h-[50px] bg-black text-white py-[10px]  rounded-[10px]  "
+                    onClick={() => capture_image(domIndex!)}
+                  >
+                    {" "}
+                    Capture
+                  </button>
+                  <button
+                    className="w-[5rem]  h-[50px] bg-red-500 text-white py-[10px]  rounded-[10px]  "
+                    onClick={() => setShowImageModal(false)}
+                  >
+                    {" "}
+                    Cancel
+                  </button>
                 </div>
               </div>
             </div>
@@ -313,23 +300,21 @@ const Register_User = () => {
 
         {number_of_picture >= 2 && (
           <button
-            type="submit"
+            onClick={handle_register_user}
             className={`  capitalize  my-[2rem] mx-auto w-[220px] h-[58px] flex justify-center items-center rounded-[32px]  bg-[#F74887] font-[700] text-[16px] text-[#FDF7FF]`}
           >
             register
           </button>
         )}
-        <Modal open={showModal} onClose={handle_close_modal}  center>
+        <Modal open={showModal} onClose={handle_close_modal} center>
           <div className="h-[300px] w-[300px] lg:w-[547px] lg:h-[500px]">
-              <Upload_Modal
-                uploadFromGallery={handleFileInputChange}
-                open_camera={open_camera}
-                domIndex={domIndex}
-              />
-
+            <Upload_Modal
+              uploadFromGallery={handleFileInputChange}
+              open_camera={open_camera}
+              domIndex={domIndex}
+            />
           </div>
         </Modal>
-       
       </div>
     </div>
   );

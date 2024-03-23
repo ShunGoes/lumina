@@ -8,7 +8,7 @@ import Modal from "react-responsive-modal";
 import Passion_Box from "../passion-box/passion-box";
 
 const Registration_Form = () => {
-  const { handle_register_user, registerInfo, setRegisterInfo } =
+  const { registerInfo, setRegisterInfo, social_user } =
     useContext(Auth_Context)!;
   const [showModal, setShowModal] = useState(false);
   const [genderBtn, setGenderBtn] = useState('')
@@ -45,7 +45,6 @@ const Registration_Form = () => {
   return (
     <form
       className="w-11/12 col-span-2 lg:col-span-1"
-      onSubmit={handle_register_user}
     >
       <div className="flex flex-col gap-2 h-[94px] my-2">
         <label htmlFor="" className="font-[500] text-[18px] text-[#2B2B2B] ">
@@ -65,28 +64,13 @@ const Registration_Form = () => {
       <div className="flex flex-col gap-2 h-[94px] my-2">
         <label htmlFor="" className="font-[500] text-[18px] text-[#2B2B2B] ">
           {" "}
-          Last Name
-        </label>
-        <input
-          type="text"
-          placeholder="last name"
-          name="last_name"
-          value={registerInfo.last_name}
-          onChange={handleChange}
-          className="h-[50px]  bg-[#EDF0F7] font-[400] text-[#2b2b2b] text-[16px]  border border-[#CCCCCC] outline-none px-4 rounded-[10px] "
-        />{" "}
-      </div>
-
-      <div className="flex flex-col gap-2 h-[94px] my-2">
-        <label htmlFor="" className="font-[500] text-[18px] text-[#2B2B2B] ">
-          {" "}
           Email Address
         </label>
         <input
           type="email"
           placeholder="johndoe@exammple.com"
           name="email"
-          value={registerInfo.email}
+          value={social_user.email ? social_user.email :  registerInfo.email}
           onChange={handleChange}
           className="h-[50px] bg-[#EDF0F7] font-[400] text-[#2b2b2b] text-[16px] border border-[#CCCCCC] outline-none px-4 rounded-[10px] "
         />{" "}
