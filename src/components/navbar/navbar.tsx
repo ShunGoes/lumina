@@ -33,10 +33,7 @@ const Navbar = () => {
     setShowModal(false);
   };
 
-  const go_to_phone_modal = () => {
-    setShowModal(false);
-    setShowPhoneModal(true);
-  };
+
   const close_phone_modal = () => {
     setShowPhoneModal(false);
   };

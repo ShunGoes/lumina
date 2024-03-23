@@ -8,7 +8,7 @@ import Modal from "react-responsive-modal";
 import Passion_Box from "../passion-box/passion-box";
 
 const Registration_Form = () => {
-  const { handle_register_user, registerInfo, setRegisterInfo, social_user } =
+  const { registerInfo, setRegisterInfo, social_user } =
     useContext(Auth_Context)!;
   const [showModal, setShowModal] = useState(false);
   const [genderBtn, setGenderBtn] = useState('')
@@ -45,7 +45,6 @@ const Registration_Form = () => {
   return (
     <form
       className="w-11/12 col-span-2 lg:col-span-1"
-      onSubmit={handle_register_user}
     >
       <div className="flex flex-col gap-2 h-[94px] my-2">
         <label htmlFor="" className="font-[500] text-[18px] text-[#2B2B2B] ">
