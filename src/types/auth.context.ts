@@ -45,7 +45,9 @@ handle_signin_with_social: (e: React.MouseEvent<HTMLButtonElement>) => Promise<v
  previewImage: ImgType[],
  setPreviewImage: React.Dispatch<React.SetStateAction<ImgType[]>>,
  showModal: boolean,
- setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+ setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
+ show_login_modal: boolean,
+ set_show_login_modal: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
   

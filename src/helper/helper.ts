@@ -29,12 +29,14 @@ import {default as No_Match} from '../assets/no-match.svg'
 import {default as Interest} from '../assets/interest.svg'
 import {default as Favorite} from '../assets/favorite.svg'
 import {default as Fresh_Guy} from '../assets/fresh-guy.svg'
-
+import {default as Mail_Black} from '../assets/mail-black.svg'
+import {default as User} from '../assets/user.svg'
 
 
 
 export default {
     Fresh_Guy,
+    User,   
     No_Match,
     Interest,
     Favorite,
@@ -64,5 +66,6 @@ export default {
     Fun_Activities,
     Cozy_Evening,
     Adventurous_Dates,
-    Friendship_Goals
+    Friendship_Goals,
+    Mail_Black
 }
