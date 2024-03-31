@@ -42,6 +42,8 @@ export const Auth_Context_Provider = ({ children }: Provider_Prop) => {
     { imgUrl: "", frame: "sixth_frame" },
   ]);
   const [showModal, setShowModal] = useState(false);
+  const [show_login_modal, set_show_login_modal] = useState(false);
+
 
 
   const passion = Array.from(registerInfo.passion)
@@ -158,6 +160,8 @@ export const Auth_Context_Provider = ({ children }: Provider_Prop) => {
     setPreviewImage,
     showModal,
     setShowModal,
+    show_login_modal,
+    set_show_login_modal
   };
 
   return (

@@ -27,7 +27,7 @@ const Explore_Users = () => {
   return (
     <div className="h-full  flex justify-center items-center">
       <div className="w-[500px] h-[90%]  relative ">
-        <div className="grid grid-cols-6 gap-4 w-[90%] z-10 mx-auto cursor-pointer absolute top-5 left-0 right-0">
+        <div className="grid grid-cols-6 gap-4 w-[90%]  z-10 mx-auto cursor-pointer absolute top-5 left-0 right-0">
           {tab_array.map((item: undefined, index) => (
             <div
               onClick={() => handle_chsnge_tab(index)}
