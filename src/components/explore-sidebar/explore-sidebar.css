@@ -1,8 +1,9 @@
 .explore-sidebar{
-    height: calc(100vh - 80px);
+    /* height: calc(100vh - 80px); */
+    box-shadow: 4px 4px 0 0  #0000001F;
     overflow: auto;
 }
-.explore-sidebar::-webkit-scrollbar {
+/* .explore-sidebar::-webkit-scrollbar {
     width: 7px;
   }
   .explore-sidebar::-webkit-scrollbar-track {
@@ -13,4 +14,4 @@
     height: 40px;
     border-radius: 10px;
 
-  }
+  } */

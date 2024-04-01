@@ -160,7 +160,7 @@ const Hero = () => {
           <div className="">
             <p className="font-[700] text-[18px] text-[#808080] ">
               Have an account already{" "}
-              <span onClick={open_login_modal} className="text-[#F74887]">
+              <span onClick={open_login_modal} className="text-[#F74887] cursor-pointer">
                 Log in
               </span>
             </p>
@@ -249,7 +249,7 @@ const Hero = () => {
             <div>
               <p className="lg:font-[700] font-[500] text-center text-[15px] lg:text-[18px] text-[#808080] ">
                 Don't have an account{" "}
-                <span onClick={back_to_signup_modal} className="text-[#F74887]">
+                <span onClick={back_to_signup_modal} className="text-[#F74887] cursor-pointer">
                   Sign Up
                 </span>
               </p>

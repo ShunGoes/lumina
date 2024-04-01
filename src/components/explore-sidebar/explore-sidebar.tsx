@@ -19,19 +19,19 @@ const Explore_Sidebar = () => {
     setShowModal(false);
   };
   return (
-    <aside className="explore-sidebar pr-3">
-      <div className="p-[5px] my-[1rem] sticky top-0 bg-white z-10 py-5">
+    <aside className="explore-sidebar  pr-2">
+      <div className="px-[5px] mb-[2rem]   bg-white z-10 ">
         <h2 className="font-[700] text-[24px] text-[#323232]  ">Explore</h2>
         <p className="font-[400] text-[14px] text-[#A0ABC0]  ">
           Discover, swipe, and connect.
         </p>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-[1rem]">
+      <div className="grid lg:grid-cols-2 gap-[10px]">
         {EXPORT_SIDEBAR_DATA.map((data) => (
           <div
             onClick={() => handle_open_modal(data.id)}
-            className="h-[255px] rounded-[10px]   relative"
+            className="h-[257px] rounded-[10px]   relative"
             key={data.id}
           >
             <img src={data.img} alt="" className="w-full h-full rounded-[10px] object-cover" />
