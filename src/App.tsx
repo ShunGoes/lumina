@@ -13,6 +13,8 @@ function App() {
   const Login = lazy(() => import('./pagges/auth-login/login'))
   const Register = lazy(() => import("./pagges/auth-register/register"))
   const Tinder = lazy(() => import("./pagges/tinder/tinder"))
+  const TindExplore_Profileer = lazy(() => import("./pagges/explore-profile/explore-profile"))
+  const Edit_Profile = lazy(() => import("./pagges/edit-profile/edit-profile"))
   return (
     <div>
       <Suspense fallback={<Loading />}>
@@ -25,6 +27,8 @@ function App() {
         <Route path='/policy' element={<Terms_And_Policy />} />
         <Route path='/explore' element={<Explore_Layout />} >
           <Route index element={<Explore_Users />} />
+          <Route path="profile" element={<TindExplore_Profileer />} />
+          <Route path="edit-profile" element={<Edit_Profile />} />
         </Route>
           
       </Routes>

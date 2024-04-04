@@ -1,6 +1,4 @@
-.user-passion{
-    overflow: auto;
-}
-.user-passion::-webkit-scrollbar{
-    width: 5px;
+
+.explore-sm{
+    height: calc(100vh - 80px);
 }
