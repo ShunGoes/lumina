@@ -5,3 +5,7 @@
 input::placeholder{
     color: #A0ABC0;
 }
+.explore-dropdown{
+        background: #fff;
+        z-index: 999;
+}

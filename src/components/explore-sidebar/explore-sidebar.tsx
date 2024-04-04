@@ -19,19 +19,19 @@ const Explore_Sidebar = () => {
     setShowModal(false);
   };
   return (
-    <aside className="explore-sidebar  pr-2">
-      <div className="px-[5px] mb-[2rem]   bg-white z-10 ">
+    <aside className="explore-sidebar h-[80vh] lg:h-auto  lg:pr-2">
+      <div className="px-[5px] mb-[2rem] sticky top-0 lg:static   bg-white z-10  py-3 lg:py-0 ">
         <h2 className="font-[700] text-[24px] text-[#323232]  ">Explore</h2>
         <p className="font-[400] text-[14px] text-[#A0ABC0]  ">
           Discover, swipe, and connect.
         </p>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-[10px]">
+      <div className="grid grid-cols-2 lg:grid-cols-2 gap-y-4 gap-x-3 lg:gap-[10px] ">
         {EXPORT_SIDEBAR_DATA.map((data) => (
           <div
             onClick={() => handle_open_modal(data.id)}
-            className="h-[257px] rounded-[10px]   relative"
+            className="h-[257px] rounded-[10px] -500  relative"
             key={data.id}
           >
             <img src={data.img} alt="" className="w-full h-full rounded-[10px] object-cover" />
@@ -42,20 +42,20 @@ const Explore_Sidebar = () => {
         ))}
       </div>
 
-      <Modal open={showModal} onClose={handle_close_modal}>
-        <div className="w-[500px] h-[600px] rounded-[10px] bg-white flex flex-col items-center gap-[4rem]">
+      <Modal open={showModal} onClose={handle_close_modal} center>
+        <div className="w-[270px] h-[400px]  lg:w-[500px] lg:h-[600px] rounded-[10px] bg-white flex flex-col items-center gap-[4rem]">
           <p className="font-[700] text-[18px] text-[#2B2B2B]">
             {modal_view?.text}{" "}
           </p>
-          <div className="">
-            <div className="h-[343.33px] ">
-              <img src={modal_view?.svgImg} alt="lumina image" />
+          <div className=" flex flex-col gap-4">
+            <div className="h-[200px]  lg:h-[343.33px]  ">
+              <img src={modal_view?.svgImg} alt="lumina image " className="object-cover lg:object-fill w-full h-full "/>
             </div>
             <div className="flex flex-col gap-[19px] items-center">
-              <button className="w-[220px] h-[58px] rounded-[32px] outline-none bg-[#F74887] px-[24px] py-[10px] font-[700] text-[16px] text-[#FDF7FF] ">
+              <button className="h-[50px] w-full lg:w-[220px] lg:h-[58px] rounded-[32px] outline-none bg-[#F74887] lg:px-[24px] lg:py-[10px] font-[700] text-[16px] text-[#FDF7FF] ">
                 Join now
               </button>
-              <button className="w-[220px] h-[58px] rounded-[32px] outline-none px-[24px] py-[10px] font-[700] text-[16px] text-[#D9D9D9] border-2 border-[#D9D9D9] ">
+              <button className="lg:w-[220px] lg:h-[58px] rounded-[32px] outline-none px-[24px] py-[10px] font-[700] text-[16px] text-[#D9D9D9] border-2 border-[#D9D9D9] ">
                 Join now
               </button>
             </div>
