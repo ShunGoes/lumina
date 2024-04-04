@@ -158,7 +158,7 @@ const Hero = () => {
             </div>
           </div>
           <div className="">
-            <p className="font-[700] text-[18px] text-[#808080] ">
+            <p className="font-[700] text-[14px] lg:text-[18px] text-[#808080] ">
               Have an account already{" "}
               <span onClick={open_login_modal} className="text-[#F74887] cursor-pointer">
                 Log in
