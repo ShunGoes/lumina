@@ -18,7 +18,8 @@ interface RegisterUserInfo {
   month: string,
   year: string,
   gender: string,
-  passion: Set<string>
+  password: string,
+  passion: Set<number>
 }
 export interface Auth_Context_Type {
     user: UserType,
@@ -48,6 +49,12 @@ handle_signin_with_social: (e: React.MouseEvent<HTMLButtonElement>) => Promise<v
  setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
  show_login_modal: boolean,
  set_show_login_modal: React.Dispatch<React.SetStateAction<boolean>>,
+ set_cloudinary_url: React.Dispatch<React.SetStateAction<string[]>>,
+ cloudinary_url: string[],
+ logout: () => void,
+ signed_in_with_socials: boolean,
+ set_signed_in_with_socials: React.Dispatch<React.SetStateAction<boolean>>,
+ PASSION_DATA: Record<string, string | number>[]
 }
 
   

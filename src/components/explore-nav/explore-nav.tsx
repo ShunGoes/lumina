@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import helper from "../../helper/helper";
 import "./explore-nav.css";
 import {AnimatePresence, motion} from "framer-motion"
@@ -7,11 +7,22 @@ import { useClickAway } from 'react-use'
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FaTimes } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { Auth_Context } from "../../context/auth.context";
 
 const Explore_Nav = () => {
   const [dropdown, setDropdown] = useState(false)
-  const navigate = useNavigate()
+  const {user, logout} = useContext(Auth_Context)!
   const ref = useRef(null)
+
+  let firstName;
+
+  if(typeof user?.firstName === "string" ){
+     firstName = user?.firstName
+     console.log(firstName)
+
+  }
+
+  const navigate = useNavigate()
 
     function nav_function(id: string){
       navigate(id)
@@ -54,8 +65,8 @@ const Explore_Nav = () => {
                 alt="lumina user profile picture object-cover "
               />
             </div>
-            <p className="font-[400] hidden lg:block text-[18px] text-[#323232] ml-3 ">
-              David
+            <p className="font-[400] capitalize hidden lg:block text-[18px] text-[#323232] ml-3 ">
+              { firstName}
             </p>
           </div>
 
@@ -121,6 +132,20 @@ const Explore_Nav = () => {
 
                   ))
                 }
+                <motion.div
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 260,
+                  damping: 20,
+                  delay: 0.5,
+                }}
+                onClick={logout}
+                className="text-red-500 cursor-pointer font-semibold text-center mt-3 text-[18px] "
+                >
+                  Logout
+                </motion.div>
               </motion.div>
             )
           }

@@ -7,18 +7,23 @@ import Upload_Modal from "../../components/upload_modal";
 import Registration_Form from "../../components/registration-form/register-form";
 import { Auth_Context } from "../../context/auth.context";
 
-// types and interfaces starts here
-
-// types and interfaces ends here
-
 const Register_User = () => {
-  //    STATES
   const [showImageModal, setShowImageModal] = useState(false);
-
   const [number_of_picture, set_number_of_pics] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [domIndex, setDomIndex] = useState<number | null>(null);
-  const { previewImage, setPreviewImage, handle_register_user } = useContext(Auth_Context)!;
+  const {
+    previewImage,
+    setPreviewImage,
+    handle_register_user,
+    set_cloudinary_url,
+    cloudinary_url,
+    signed_in_with_socials,
+    handle_signin_with_social,
+  } = useContext(Auth_Context)!;
+
+  const cloudinary_name = import.meta.env.VITE_CLOUDINARY_NAME;
+  const cloudinary_preset = import.meta.env.VITE_UPLOAD_PRESET;
 
   // dynamically creating refs for our input elements
   const fileInputRef = Array.from({ length: 6 }, () =>
@@ -34,24 +39,45 @@ const Register_User = () => {
   };
 
   // this function handles image uploads
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file: File | undefined = e.target.files?.[0];
     const { name } = e.target;
 
-    if (file) {
-      const reader = new FileReader();
+    const url_generator = URL.createObjectURL(file!);
 
-      // set the image to state as a data URL
-      reader.onloadend = () => {
-        const updated_state_array = previewImage.map((obj) =>
-          obj.frame === name ? { ...obj, imgUrl: reader.result } : obj
+    const updated_state_array = previewImage.map((obj) =>
+      obj.frame === name ? { ...obj, imgUrl: url_generator } : obj
+    );
+
+    setPreviewImage(updated_state_array);
+    setShowModal(false);
+
+    // upload file to cloudinary
+    if (
+      (file && file?.type === "image/png") ||
+      file?.type === "image/jpg" ||
+      file?.type === "image/jpeg"
+    ) {
+      const image = new FormData();
+      image.append("file", file);
+      image.append("cloud_name", cloudinary_name);
+      image.append("upload_preset", cloudinary_preset);
+
+      try {
+        const response = await fetch(
+          `https://api.cloudinary.com/v1_1/${cloudinary_name}/upload`,
+          {
+            method: "POST",
+            body: image,
+          }
         );
-        setPreviewImage(updated_state_array);
-        setShowModal(false);
-      };
-      //  this function is invoked here and all it does is to read the content of the file.
-      //  after reading is completed, the onloadend event is fired on the "reader" instance
-      reader.readAsDataURL(file);
+
+        const data = await response.json();
+
+        set_cloudinary_url([...cloudinary_url, data.url]);
+      } catch (error) {
+        console.log("An Error occured uploading image:", error);
+      }
     }
   };
 
@@ -64,7 +90,6 @@ const Register_User = () => {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
 
       const video_refernce = videoRef[index].current;
-      console.log(video_refernce);
 
       video_refernce!.srcObject = stream;
       video_refernce?.play();
@@ -98,6 +123,28 @@ const Register_User = () => {
         );
 
         const result = canvas_element.toDataURL("image/jpg");
+        // console.log(result);
+        if (result) {
+          const image = new FormData();
+          image.append("file", result);
+          image.append("cloud_name", cloudinary_name);
+          image.append("upload_preset", import.meta.env.VITE_UPLOAD_PRESET);
+
+          try {
+            const response = await fetch(
+              `https://api.cloudinary.com/v1_1/${cloudinary_name}/upload`,
+              {
+                method: "POST",
+                body: image,
+              }
+            );
+            const data = await response.json();
+            set_cloudinary_url([...cloudinary_url, data.url]);
+          } catch (error) {
+            console.log("An error occure uploading image from camera", error);
+          }
+        }
+
         // console.log(result)
         const updated_state_array = previewImage.map((obj, idx) =>
           idx === index ? { ...obj, imgUrl: result } : obj
@@ -125,15 +172,12 @@ const Register_User = () => {
     setShowModal(false);
   };
 
-  // console.log(number_of_picture);
   useEffect(() => {
     for (let obj of previewImage) {
       if (obj?.imgUrl) {
         set_number_of_pics((prev) => prev + 1);
       }
     }
-    // const counter = previewImage.map(obj => typeof obj.imgUrl === 'string' && obj?.imgUrl?.length >= 2 ? 1 : number_of_picture)
-    // set_number_of_pics(prev => prev + counter)
   }, [previewImage]);
 
   return (
@@ -173,7 +217,7 @@ const Register_User = () => {
                   <div className=" absolute bottom-0  w-full h-full ">
                     <input
                       type="file"
-                      accept="image/*"
+                      accept="image/jpg, image/jpeg, image/png"
                       className="hidden"
                       ref={fileInputRef[index]}
                       name={
@@ -208,8 +252,10 @@ const Register_User = () => {
               </p>
             )}
           </div>
+
           {/* form starts here */}
           <Registration_Form />
+
           <div className="h-full w-full lg:w-11/12 col-span-1  hidden lg:block">
             <p className="font-[500] text-[18px] text-[#808080] mb-[1rem]">
               Profile Picture
@@ -298,7 +344,7 @@ const Register_User = () => {
           )}
         </div>
 
-        {number_of_picture >= 2 && (
+        {number_of_picture >= 2 && !signed_in_with_socials && (
           <button
             onClick={handle_register_user}
             className={`  capitalize  my-[2rem] mx-auto w-[220px] h-[58px] flex justify-center items-center rounded-[32px]  bg-[#F74887] font-[700] text-[16px] text-[#FDF7FF]`}
@@ -306,6 +352,15 @@ const Register_User = () => {
             register
           </button>
         )}
+        {number_of_picture >= 2 && signed_in_with_socials && (
+          <button
+            onClick={handle_signin_with_social}
+            className={`  capitalize  my-[2rem] mx-auto w-[220px] h-[58px] flex justify-center items-center rounded-[32px]  bg-blue-500 font-[700] text-[16px] text-[#FDF7FF]`}
+          >
+            register
+          </button>
+        )}
+
         <Modal open={showModal} onClose={handle_close_modal} center>
           <div className="h-[300px] w-[300px] lg:w-[547px] lg:h-[500px]">
             <Upload_Modal
