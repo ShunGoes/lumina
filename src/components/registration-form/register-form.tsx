@@ -5,6 +5,9 @@ import { Auth_Context } from "../../context/auth.context";
 
 import Modal from "react-responsive-modal";
 import Passion_Box from "../passion-box/passion-box";
+import { useForm } from "react-hook-form";
+import Input from "../Input";
+import ProfileUploads from "../ProfileUploads";
 
 const Registration_Form = () => {
   const {
@@ -14,6 +17,17 @@ const Registration_Form = () => {
     signed_in_with_socials,
     PASSION_DATA,
   } = useContext(Auth_Context)!;
+
+  const { register, handleSubmit, setValue, watch } = useForm<RegisterUserInfo>(
+    {
+      defaultValues: {
+        email: social_user.email,
+        passion: registerInfo.passion,
+      pictures: []
+      },
+    }
+  );
+
   const [showModal, setShowModal] = useState(false);
   const [genderBtn, setGenderBtn] = useState("");
   const [showPassion, setShowPassion] = useState(false);
@@ -22,7 +36,7 @@ const Registration_Form = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    setRegisterInfo({ ...registerInfo, [name]: value });
+    setRegisterInfo((prevState) => ({ ...prevState, [name]: value }));
   };
 
   const handleGenderChange = (e: React.MouseEvent<HTMLInputElement>) => {
@@ -47,55 +61,27 @@ const Registration_Form = () => {
 
   return (
     <form className="w-11/12 col-span-2 lg:col-span-1">
-      <div className="flex flex-col gap-2 h-[94px] my-2">
-        <label htmlFor="" className="font-[500] text-[18px] text-[#2B2B2B] ">
-          {" "}
-          First Name
-        </label>
-        <input
-          type="text"
-          placeholder="name"
-          name="first_name"
-          value={registerInfo.first_name}
-          onChange={handleChange}
-          className="h-[50px]  bg-[#EDF0F7] font-[400] text-[#2b2b2b] text-[16px]  border border-[#CCCCCC] outline-none px-4 rounded-[10px]  "
-        />{" "}
-      </div>
+      <Input
+        label="First Name"
+        placeholder="John Doe"
+        {...register("first_name")}
+      />
       {!signed_in_with_socials && (
-        <div className="flex flex-col gap-2 h-[94px] my-2">
-          <label
-            htmlFor="password"
-            className="font-[500] text-[18px] text-[#2B2B2B] "
-          >
-            {" "}
-            Password
-          </label>
-          <input
-            type="password"
-            placeholder="Password"
-            name="password"
-            value={registerInfo.password}
-            onChange={handleChange}
-            className="h-[50px] bg-[#EDF0F7] font-[400] text-[#2b2b2b] text-[16px] border border-[#CCCCCC] outline-none px-4 rounded-[10px] "
-          />{" "}
-        </div>
+        <Input
+          type="password"
+          label="Password"
+          placeholder="password"
+          {...register("password")}
+        />
       )}
 
       {!signed_in_with_socials && (
-        <div className="flex flex-col gap-2 h-[94px] my-2">
-          <label htmlFor="" className="font-[500] text-[18px] text-[#2B2B2B] ">
-            {" "}
-            Email Address
-          </label>
-          <input
-            type="email"
-            placeholder="johndoe@exammple.com"
-            name="email"
-            value={social_user.email ? social_user.email : registerInfo.email}
-            onChange={handleChange}
-            className="h-[50px] bg-[#EDF0F7] font-[400] text-[#2b2b2b] text-[16px] border border-[#CCCCCC] outline-none px-4 rounded-[10px] "
-          />{" "}
-        </div>
+        <Input
+          type="email"
+          label="Email Address"
+          placeholder="Johndoe@example.com"
+          {...register("email")}
+        />
       )}
 
       <div className="flex flex-col gap-2 h-[94px] my-2 ">
@@ -103,39 +89,62 @@ const Registration_Form = () => {
           {" "}
           Birthday
         </label>
-        <div className="flex gap-[10px]  w-full">
+        <div className="flex gap-[10px] justify-between items-center  w-11/12 border-4">
+          <Input
+            width="1/3"
+            type="number"
+            pattern="\d"
+            inputMode="numeric"
+            maxLength={2}
+            placeholder="DD"
+            {...register("day")}
+          />
+          <Input
+            width="1/3"
+            type="number"
+            pattern="\d"
+            inputMode="numeric"
+            maxLength={2}
+            placeholder="MM"
+            {...register("month")}
+          />
+          <Input
+            width="1/3"
+            type="number"
+            pattern="\d"
+            inputMode="numeric"
+            maxLength={4}
+            placeholder="YYYY"
+            {...register("year")}
+          />
+        </div>
+        {/* <div className="flex gap-[10px]  w-full">
           <input
             type="number"
             pattern="\d*"
             placeholder="DD"
-            name="day"
             inputMode="numeric"
             maxLength={2}
-            value={registerInfo.day}
-            onChange={handleChange}
+            {...register("day")}
             className="h-[50px] bg-[#EDF0F7] w-3/12 lg:w-[104px] font-[400] text-[#2b2b2b] text-[16px] border border-[#CCCCCC] outline-none text-center rounded-[10px]"
           />{" "}
           <input
             type="number"
             pattern="\d*"
             placeholder="MM"
-            name="month"
             maxLength={2}
-            value={registerInfo.month}
-            onChange={handleChange}
+            {...register("month")}
             className="h-[50px] bg-[#EDF0F7] w-3/12 lg:w-[104px] font-[400] text-[#2b2b2b] text-[16px] border border-[#CCCCCC] outline-none text-center rounded-[10px]"
           />{" "}
           <input
             type="number"
             pattern="\d*"
             placeholder="YYYY"
-            name="year"
             maxLength={4}
-            value={registerInfo.year}
-            onChange={handleChange}
+            {...register("year")}
             className="h-[50px] bg-[#EDF0F7] w-4/12 lg:w-[123px] font-[400] text-[#2b2b2b] text-[16px] border border-[#CCCCCC] outline-none text-center rounded-[10px]"
           />{" "}
-        </div>
+        </div> */}
       </div>
 
       <div className="flex flex-col gap-2 my-2 ">
@@ -146,22 +155,24 @@ const Registration_Form = () => {
         <div className="flex gap-[10px]">
           <input
             type="button"
-            name="gender"
-            value="Male"
-            onClick={handleGenderChange}
+            value="male"
+            onClick={() => {
+              setValue("gender", "male");
+            }}
             className={`${
-              genderBtn.toLowerCase() === "male"
+              watch("gender") === "male"
                 ? "bg-[#F74887] text-white"
                 : "bg-[#EDF0F7]"
             } h-[50px]  w-5/12 font-[500] text-[#333333] text-[16px] border border-[##EDF0F7] outline-none text-center rounded-[10px]`}
           />
           <input
             type="button"
-            name="gender"
-            value="Female"
-            onClick={handleGenderChange}
+            value="female"
+            onClick={() => {
+              setValue("gender", "female");
+            }}
             className={`${
-              genderBtn.toLowerCase() === "female"
+              watch("gender") === "female"
                 ? "bg-[#F74887] text-white"
                 : "bg-[#EDF0F7]"
             } h-[50px] bg-[#EDF0F7] w-5/12 font-[500] text-[#333333] text-[16px] border border-[##EDF0F7] outline-none text-center rounded-[10px]`}
@@ -199,6 +210,24 @@ const Registration_Form = () => {
         </div>
       </div>
       {/*  */}
+      <div className="h-full w-full lg:w-11/12 col-span-1  hidden lg:block">
+        <p className="font-[500] text-[18px] text-[#808080] mb-[1rem]">
+          Profile Picture
+        </p>
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-[20px] ">
+
+        {
+          [...Array(6).map((obj, index) => (
+            <ProfileUploads key={index} upload={watch("pictures")[index]} setUploads={(e) => setValue("pictures", [...watch("pictures"), e])}/>
+          ))]
+        }
+        </div>
+        {number_of_picture >= 2 ? null : (
+          <p className="my-[2rem]  font-[400] text-[16px] text-[#808080]">
+            Add at least 2 pictures to continue
+          </p>
+        )}
+      </div>
       <Modal open={showModal} onClose={handleCloseModal} center>
         <div className=""></div>
         <div className="w-[300px] h-[700px] lg:h-[550px] lg:w-[600px]    rounded-[10px]  flex flex-col justify-center gap-[2rem] ">

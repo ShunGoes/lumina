@@ -6,29 +6,26 @@ import Modal from "react-responsive-modal";
 import Upload_Modal from "../../components/upload_modal";
 import Registration_Form from "../../components/registration-form/register-form";
 import { Auth_Context } from "../../context/auth.context";
+import ProfileUploads from "../../components/ProfileUploads";
 
 const Register_User = () => {
   const [showImageModal, setShowImageModal] = useState(false);
   const [number_of_picture, set_number_of_pics] = useState(0);
-  const [showModal, setShowModal] = useState(false);
   const [domIndex, setDomIndex] = useState<number | null>(null);
   const {
     previewImage,
     setPreviewImage,
     handle_register_user,
-    set_cloudinary_url,
-    cloudinary_url,
     signed_in_with_socials,
     handle_signin_with_social,
   } = useContext(Auth_Context)!;
+  const [previewImage, setPreviewImage] = useState<string[]>([
+   
+  ]);
 
-  const cloudinary_name = import.meta.env.VITE_CLOUDINARY_NAME;
-  const cloudinary_preset = import.meta.env.VITE_UPLOAD_PRESET;
 
   // dynamically creating refs for our input elements
-  const fileInputRef = Array.from({ length: 6 }, () =>
-    useRef<HTMLInputElement | null>(null)
-  );
+ 
   const videoRef = Array.from({ length: 6 }, () =>
     useRef<HTMLVideoElement | null>(null)
   );
@@ -39,47 +36,7 @@ const Register_User = () => {
   };
 
   // this function handles image uploads
-  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    const file: File | undefined = e.target.files?.[0];
-    const { name } = e.target;
 
-    const url_generator = URL.createObjectURL(file!);
-
-    const updated_state_array = previewImage.map((obj) =>
-      obj.frame === name ? { ...obj, imgUrl: url_generator } : obj
-    );
-
-    setPreviewImage(updated_state_array);
-    setShowModal(false);
-
-    // upload file to cloudinary
-    if (
-      (file && file?.type === "image/png") ||
-      file?.type === "image/jpg" ||
-      file?.type === "image/jpeg"
-    ) {
-      const image = new FormData();
-      image.append("file", file);
-      image.append("cloud_name", cloudinary_name);
-      image.append("upload_preset", cloudinary_preset);
-
-      try {
-        const response = await fetch(
-          `https://api.cloudinary.com/v1_1/${cloudinary_name}/upload`,
-          {
-            method: "POST",
-            body: image,
-          }
-        );
-
-        const data = await response.json();
-
-        set_cloudinary_url([...cloudinary_url, data.url]);
-      } catch (error) {
-        console.log("An Error occured uploading image:", error);
-      }
-    }
-  };
 
   //  these functions handle opening the camera and taking a photo
   const open_camera = async (index: number) => {
@@ -164,10 +121,7 @@ const Register_User = () => {
   };
 
   // helpers for modals
-  const handle_open_modal = (index: number) => {
-    setShowModal(true);
-    setDomIndex(index);
-  };
+ 
   const handle_close_modal = () => {
     setShowModal(false);
   };
@@ -197,55 +151,7 @@ const Register_User = () => {
             <p className="font-[500] text-[22px] text-[#808080] mb-[1rem]">
               Profile Picture
             </p>
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-[20px] ">
-              {previewImage.map((obj, index) => (
-                <div
-                  className={`h-[200px]  lg:h-[230px] relative rounded-[8px]  ${
-                    obj?.imgUrl ? "border-none" : "border-dashed border-[4px]"
-                  } `}
-                  key={index}
-                >
-                  {typeof obj?.imgUrl === "string" && obj?.imgUrl && (
-                    <div className="w-full h-full">
-                      <img
-                        src={obj?.imgUrl}
-                        alt=""
-                        className="w-full h-full rounded-[8px] object-cover"
-                      />
-                    </div>
-                  )}
-                  <div className=" absolute bottom-0  w-full h-full ">
-                    <input
-                      type="file"
-                      accept="image/jpg, image/jpeg, image/png"
-                      className="hidden"
-                      ref={fileInputRef[index]}
-                      name={
-                        typeof obj?.frame === "string" ? obj?.frame : undefined
-                      }
-                      onChange={handleFileChange}
-                    />
-                    <div className=" w-full h-full relative">
-                      {obj?.imgUrl ? (
-                        <img
-                          src={helper.Edit_Icon}
-                          alt="edit pictures"
-                          className="absolute -bottom-3 -right-2 "
-                          onClick={() => handle_open_modal(index)}
-                        />
-                      ) : (
-                        <img
-                          src={helper.Add_Icon}
-                          alt="add pictures"
-                          className=" absolute -bottom-3 -right-2"
-                          onClick={() => handle_open_modal(index)}
-                        />
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+           
             {number_of_picture >= 2 ? null : (
               <p className="my-[2rem]  font-[400] text-[16px] text-[#808080]">
                 Add at least 2 pictures to continue
@@ -256,65 +162,7 @@ const Register_User = () => {
           {/* form starts here */}
           <Registration_Form />
 
-          <div className="h-full w-full lg:w-11/12 col-span-1  hidden lg:block">
-            <p className="font-[500] text-[18px] text-[#808080] mb-[1rem]">
-              Profile Picture
-            </p>
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-[20px] ">
-              {previewImage.map((obj, index) => (
-                <div
-                  className={`h-[230px] relative rounded-[8px]  ${
-                    obj?.imgUrl ? "border-none" : "border-dashed border-[4px]"
-                  } `}
-                  key={index}
-                >
-                  {typeof obj?.imgUrl === "string" && obj?.imgUrl && (
-                    <div className="w-full h-full ">
-                      <img
-                        src={obj?.imgUrl}
-                        alt=""
-                        className="w-full h-full object-cover rounded-[8px]"
-                      />
-                    </div>
-                  )}
-                  <div className=" absolute bottom-0  w-full h-full ">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      className="hidden"
-                      ref={fileInputRef[index]}
-                      name={
-                        typeof obj?.frame === "string" ? obj?.frame : undefined
-                      }
-                      onChange={handleFileChange}
-                    />
-                    <div className=" w-full h-full relative">
-                      {obj?.imgUrl ? (
-                        <img
-                          src={helper.Edit_Icon}
-                          alt="edit pictures"
-                          className="absolute -bottom-3 -right-2 "
-                          onClick={() => handle_open_modal(index)}
-                        />
-                      ) : (
-                        <img
-                          src={helper.Add_Icon}
-                          alt="add pictures"
-                          className=" absolute -bottom-3 -right-2"
-                          onClick={() => handle_open_modal(index)}
-                        />
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            {number_of_picture >= 2 ? null : (
-              <p className="my-[2rem]  font-[400] text-[16px] text-[#808080]">
-                Add at least 2 pictures to continue
-              </p>
-            )}
-          </div>
+       
 
           {showImageModal && (
             <div className="absolute top-0 bottom-0 left-0 right-0 h-[80vh] flex justify-center items-center  ">
@@ -361,8 +209,7 @@ const Register_User = () => {
           </button>
         )}
 
-        <Modal open={showModal} onClose={handle_close_modal} center>
-          <div className="h-[300px] w-[300px] lg:w-[547px] lg:h-[500px]">
+        
             <Upload_Modal
               uploadFromGallery={handleFileInputChange}
               open_camera={open_camera}

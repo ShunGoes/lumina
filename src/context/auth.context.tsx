@@ -30,7 +30,7 @@ export const Auth_Context_Provider = ({ children }: Provider_Prop) => {
     email: "",
   });
 
-  const [registerInfo, setRegisterInfo] = useState({
+  const [registerInfo, setRegisterInfo] = useState<RegisterUserInfo>({
     email: "",
     first_name: "",
     day: "",
@@ -38,16 +38,9 @@ export const Auth_Context_Provider = ({ children }: Provider_Prop) => {
     year: "",
     gender: "",
     password: "",
-    passion: new Set<number>(),
+    passion: []
   });
-  const [previewImage, setPreviewImage] = useState<ImgType[]>([
-    { imgUrl: "", frame: "first_frame" },
-    { imgUrl: "", frame: "second_frame" },
-    { imgUrl: "", frame: "third_frame" },
-    { imgUrl: "", frame: "fourth_frame" },
-    { imgUrl: "", frame: "fifth_frame" },
-    { imgUrl: "", frame: "sixth_frame" },
-  ]);
+
   const [showModal, setShowModal] = useState(false);
   const [show_login_modal, set_show_login_modal] = useState(false);
   const [cloudinary_url, set_cloudinary_url] = useState<string[]>([]);

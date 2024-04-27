@@ -19,7 +19,7 @@ interface RegisterUserInfo {
   year: string,
   gender: string,
   password: string,
-  passion: Set<number>
+  passion: number[]
 }
 export interface Auth_Context_Type {
     user: UserType,

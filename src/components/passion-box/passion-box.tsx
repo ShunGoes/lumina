@@ -13,24 +13,19 @@ const Passion_Box = ({ passion, idx }: PassionProps) => {
   const [active, setActive] = useState(false);
 
   const add_item_to_passion = (index: number) => {
-    const item_to_add = index;
     const passion_set: Set<number> = new Set([...registerInfo.passion]);
+    const checks_for_duplicate = registerInfo.passion.filter(item => item === index)
 
-    if (registerInfo.passion.has(item_to_add)) {
-      // passion_set.delete(item_to_add)
-      // setRegisterInfo({
-      //   ...registerInfo,
-      //   passion: new Set([...passion_set]),
-      // });
+    if (checks_for_duplicate.length >= 1) {
       return;
     } else if (
-      !registerInfo.passion.has(item_to_add) &&
-      registerInfo.passion.size < 4
+      checks_for_duplicate.length < 1 &&
+      registerInfo.passion.length < 4
     ) {
-      passion_set.add(item_to_add);
+     
       setRegisterInfo({
         ...registerInfo,
-        passion: new Set([...passion_set]),
+        passion: [...registerInfo.passion, index],
       });
     }
     setActive((prev: boolean) => !prev);
