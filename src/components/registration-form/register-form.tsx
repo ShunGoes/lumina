@@ -15,6 +15,7 @@ const Registration_Form = () => {
         signedInWithSocials,
         PASSION_DATA,
         handle_register_user,
+        formError,
     } = useContext(Auth_Context)!;
 
     const {
@@ -64,6 +65,11 @@ const Registration_Form = () => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
+            {formError && (
+                <p className="text-[#AA4A44] text-[14px] text-center">
+                    {formError}
+                </p>
+            )}
             <div className="grid grid-cols-1 gap-y-[2rem] lg:grid-cols-2 w-11/12 mx-auto justify-items-center ">
                 <div className="w-11/12 col-span-2 lg:col-span-1">
                     <Input
