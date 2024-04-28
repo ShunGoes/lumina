@@ -16,7 +16,8 @@ export const AppConfigContext = createContext<{
     togglePictureOptions: () => null,
     isPictureOptionOpen: false,
     uploadedFileUrl: "",
-    uploadToCloudinary: (image: File | Blob) => null,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    uploadToCloudinary: (_image: File | Blob) => null,
 });
 
 export const AppConfigContextProvider = ({
