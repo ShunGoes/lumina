@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect, useCallback } from "react";
 
-import {
+import client, {
     authenticate_user,
     sign_in_with_social,
     get_passions_array,
@@ -10,9 +10,8 @@ import {
     UserType,
     Provider_Prop,
 } from "../types/auth.context";
-// import { ImgType } from "../types/auth.context";
 import { useNavigate } from "react-router-dom";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 
 export const Auth_Context = createContext<Auth_Context_Type | null>(null);
 
@@ -122,8 +121,8 @@ export const Auth_Context_Provider = ({ children }: Provider_Prop) => {
         };
 
         try {
-            const response = await axios.post(
-                "https://lumina-be.onrender.com/create-account",
+            const response = await client.post(
+                "create-account",
                 register_user_details,
                 {
                     headers: {
@@ -147,7 +146,6 @@ export const Auth_Context_Provider = ({ children }: Provider_Prop) => {
                 }>;
                 message?: string;
             }>;
-            console.log(err);
             const errorArrayMessage = err.response?.data.errors
                 ? err.response.data.errors[0].msg
                 : "";

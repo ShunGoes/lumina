@@ -1,4 +1,17 @@
+import axios from "axios";
+
 const baseUrl = "https://lumina-be.onrender.com";
+
+const client = axios.create({
+  baseURL: baseUrl,
+  headers: {
+      "x-subject-type": "standard",
+      "content-type": "application/json",
+  },
+  withCredentials: true,
+});
+
+export default client;
 
 export const authenticate_user = async (body: string, url: string) => {
   // sends a userss data to the database for auth purppose
@@ -18,7 +31,7 @@ export const authenticate_user = async (body: string, url: string) => {
     return data;
   } catch (error) {
     // create an error object
-    let error_object = { error: true, message: error };
+    const error_object = { error: true, message: error };
 
     return error_object;
   }
@@ -41,7 +54,7 @@ export const sign_in_with_social = async (body: string, url: string) => {
     return data;
   } catch (error) {
     // create an error object
-    let error_object = { error: true, message: error };
+    const error_object = { error: true, message: error };
 
     return error_object;
   }
