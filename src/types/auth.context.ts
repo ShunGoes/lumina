@@ -18,7 +18,7 @@ export interface Auth_Context_Type {
     handle_register_user: (
       data: RegisterUserInfo
     ) => Promise<void>;
-    handle_login_user: (e: React.FormEvent<HTMLFormElement>) => Promise<void> ,
+    handle_login_user: (data: EmailAndPasswordType) => Promise<void>
     setLoginInfo: React.Dispatch<React.SetStateAction<EmailAndPasswordType>>,
     setRegisterInfo: React.Dispatch<React.SetStateAction<RegisterUserInfo>>,
     formError: string,
