@@ -1,12 +1,11 @@
 interface RegisterUserInfo {
     email: string,
-    first_name: string,
+    firstName: string,
     day: string,
     month: string,
     year: string,
     gender: string,
-    password: string,
+    password?: string,
     passion: number[],
     pictures: string[]
-  
   }
