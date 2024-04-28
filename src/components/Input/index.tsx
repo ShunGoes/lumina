@@ -8,6 +8,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 const Input: React.FC<InputProps> = forwardRef<HTMLInputElement, InputProps>(
     ({ label, width = "full", error, ...props }, ref) => {
+            // console.log(props.value, props.name)
         return (
             <div
                 className={`w-${width} flex flex-col gap-2 ${
@@ -28,7 +29,7 @@ const Input: React.FC<InputProps> = forwardRef<HTMLInputElement, InputProps>(
                     {...props}
                     className={`h-[50px]  bg-[#EDF0F7] font-[400] text-[#2b2b2b] text-[16px]  border border-[${
                         error ? "#AA4A44" : "#CCCCCC"
-                    }] outline-none px-4 rounded-[10px] w-[100%]`}
+                    }] outline-none px-4 rounded-[10px] w-${width}`}
                 />
                 {error && <p className="text-[#AA4A44] text-[14px]">{error}</p>}
             </div>

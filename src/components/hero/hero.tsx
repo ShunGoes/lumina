@@ -9,6 +9,8 @@ import {
     signInWithFacebookPopup,
     signInWithGooglePopup,
 } from "../../utils/firebase/firebase.config";
+import Input from "../Input";
+import { useForm } from "react-hook-form";
 
 const Hero = () => {
     const {
@@ -24,6 +26,7 @@ const Hero = () => {
         loginInfo,
         setSignedInWithSocials,
     } = useContext(Auth_Context)!;
+    const {register,handleSubmit , formState: { errors }} = useForm<EmailAndPasswordType>()
     const [showOhoneLoginMModal, setShowPhoneModal] = useState(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -107,6 +110,8 @@ const Hero = () => {
         }
     };
 
+    // console.log(watch("email"));
+    
     return (
         <div className="hero relative w-full z-100   h-full text-white flex justify-center items-center">
             <div className=" h-auto w-[386px]  lg:w-[808px] lg:h-[378px] flex flex-col  lg:gap-0  lg:justify-around">
@@ -275,15 +280,24 @@ const Hero = () => {
                         <div className="lg:h-[370px]  flex flex-col gap-[3rem] lg:gap-3 lg:justify-between ">
                             <form onSubmit={handle_login_user}>
                                 <div className="flex flex-col items-center gap-4 lg:gap-5 ">
-                                    <div className="relative lg:h-[46px] w-11/12 lg:w-auto ">
-                                        <input
+                                      
+                                    <div className="relative lg:h-[50px] w-11/12 lg:w-auto border-2 border-red-500 ">
+                                      
+                                    <Input 
+                                            type="email"
+                                            
+                                            {...register("email")}
+                                            placeholder="Enter yoour email address"
+                                            error={errors.email?.message}
+                                        />
+                                        {/* <input
                                             type="text"
                                             name="email"
                                             value={loginInfo.email}
                                             onChange={handleLoginChange}
                                             className="w-full mx-auto  lg:w-[367px] lg:h-full rounded-[5px] border bg-[#EDF0F7] border-[#AAAAAA] px-[45px] py-[5px] lg:py-0  placeholder-[#555555] outline-none placeholder-[14px] "
                                             placeholder="Enter yoour email address"
-                                        />
+                                        /> */}
                                         <div className="flex items-center left-3 lg:left-5 h-full absolute top-0 w-[30px]">
                                             <img
                                                 src={Helper.User}

@@ -15,6 +15,7 @@ const Registration_Form = () => {
         signedInWithSocials,
         PASSION_DATA,
         handle_register_user,
+        registerInfo,
     } = useContext(Auth_Context)!;
 
     const {
@@ -26,7 +27,7 @@ const Registration_Form = () => {
         clearErrors,
     } = useForm<RegisterUserInfo>({
         defaultValues: {
-            email: social_user.email || "",
+            email: social_user.email || registerInfo.email || "",
             passion: [],
             pictures: [],
         },
@@ -47,6 +48,8 @@ const Registration_Form = () => {
     };
 
     const onSubmit = (data: RegisterUserInfo) => {
+        console.log(data);
+        
         handle_register_user(data);
     };
 

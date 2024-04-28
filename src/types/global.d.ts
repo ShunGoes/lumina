@@ -9,3 +9,6 @@ interface RegisterUserInfo {
     passion: number[],
     pictures: string[]
   }
+  interface EmailAndPasswordType{
+    email: string, password: string
+  }
