@@ -61,9 +61,9 @@ export const sign_in_with_social = async (body: string, url: string) => {
 };
 export const get_passions_array = async () => {
   try {
-    const response = await fetch(`${baseUrl}/get-passions`);
+    const response =await axios.get(`${baseUrl}/get-passions`);
 
-    const data = await response.json();
+    const data = await response.data;
 
     return data;
   } catch (error) {

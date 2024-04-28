@@ -51,6 +51,7 @@ export const Auth_Context_Provider = ({ children }: Provider_Prop) => {
   useEffect(() => {
     const fetch_passions = async () => {
       const { passions } = await get_passions_array()!;
+      
       SET_PASSION_DATA(passions);
     };
     fetch_passions();
