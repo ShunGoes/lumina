@@ -1,5 +1,5 @@
-import { ChangeEvent, useContext, useRef } from "react";
-import { AppConfigContext } from "../../context/appConfig.context";
+import { ChangeEvent, useRef } from "react";
+import { useAppConfig } from "../../context/appConfig.context";
 import helper from "../../helper/helper";
 import Modal from "react-responsive-modal";
 
@@ -16,7 +16,7 @@ const ProfileUploads = ({
         toggleCamera,
         isCameraOpen,
         uploadToCloudinary,
-    } = useContext(AppConfigContext);
+    } = useAppConfig();
 
     const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
         const file: File | undefined = e.target.files?.[0];

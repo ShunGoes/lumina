@@ -1,14 +1,7 @@
 import { motion, AnimatePresence, Variants } from "framer-motion";
-import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
-
-// relative imports
-import helper from "../../helper/helper";
-import { Auth_Context } from "../../context/auth.context";
-import {
-    signInWithFacebookPopup,
-    signInWithGooglePopup,
-} from "../../utils/firebase/firebase.config";
+import { useAuth } from "../../context/auth.context";
+import { FcGoogle } from "react-icons/fc";
+import { FaFacebookF } from "react-icons/fa";
 
 // motion div styles
 const parentVariant: Variants = {
@@ -30,40 +23,7 @@ const chiildVariant: Variants = {
 };
 
 const Nav_Dropdown = () => {
-    const { setFormError, set_social_user } = useContext(Auth_Context)!;
-    const navigate = useNavigate();
-
-    const go_to_register_page = () => {
-        navigate("/register");
-    };
-
-    const get_facebook_signup_details = async () => {
-        try {
-            const response = await signInWithFacebookPopup();
-
-            const { displayName, email } = response.user;
-
-            if (typeof displayName === "string" && typeof email === "string") {
-                const firstName = displayName.split(" ")[0];
-                set_social_user({ firstName, email });
-                go_to_register_page();
-            }
-        } catch (err) {
-            setFormError(err as string);
-        }
-    };
-
-    const get_google_signup_details = async () => {
-        const response = await signInWithGooglePopup();
-
-        const { displayName, email } = response.user;
-
-        if (typeof displayName === "string" && typeof email === "string") {
-            const firstName = displayName?.split(" ")[0];
-            set_social_user({ firstName, email });
-            go_to_register_page();
-        }
-    };
+    const { signUpWithFacebook, signUpWithGoogle } = useAuth()!;
 
     return (
         <div className=" w-full right-0  z-20  absolute top-[4.5rem] lg:hidden bg-black text-white ">
@@ -77,20 +37,20 @@ const Nav_Dropdown = () => {
                 >
                     <motion.div
                         variants={chiildVariant}
-                        onClick={get_google_signup_details}
+                        onClick={() => signUpWithGoogle()}
                         className="w-10/12 mx-auto h-[2rem] py-3 flex items-center gap-4 "
                     >
-                        <img src={helper.Google} alt="" />{" "}
+                        <FcGoogle />
                         <span className="font-[700] text-[18px] text-white">
                             Sign in with Google
                         </span>
                     </motion.div>
                     <motion.div
                         variants={chiildVariant}
-                        onClick={get_facebook_signup_details}
+                        onClick={() => signUpWithFacebook()}
                         className="w-10/12 mx-auto  h-[2rem]  flex items-center gap-4"
                     >
-                        <img src={helper.Facebook} alt="" />{" "}
+                        <FaFacebookF />
                         <span className="font-[700] text-[18px] text-white">
                             Sign in with Facebook
                         </span>
