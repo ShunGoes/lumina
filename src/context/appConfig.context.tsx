@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 
 export const AppConfigContext = createContext<{
     toggleCamera: () => void;
@@ -20,11 +20,7 @@ export const AppConfigContext = createContext<{
     uploadToCloudinary: (_image: File | Blob) => null,
 });
 
-export const AppConfigContextProvider = ({
-    children,
-}: {
-    children: ReactNode;
-}) => {
+export const AppConfigProvider = ({ children }: { children: ReactNode }) => {
     const [isCameraOpen, setCameraOpen] = useState<boolean>(false);
     const [isPictureOptionOpen, setIsPictureOptionOpen] = useState(false);
     const [uploadedFileUrl, setUploadedFileUrl] = useState<string>("");
@@ -83,3 +79,5 @@ export const AppConfigContextProvider = ({
         </AppConfigContext.Provider>
     );
 };
+// eslint-disable-next-line react-refresh/only-export-components
+export const useAppConfig = () => useContext(AppConfigContext);

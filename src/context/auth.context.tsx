@@ -1,36 +1,28 @@
-import { createContext, useState, useEffect, useCallback } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
 
-import client, {
-    authenticate_user,
-    sign_in_with_social,
-    get_passions_array,
-} from "../utils/auth.helper";
-import {
-    Auth_Context_Type,
-    UserType,
-    Provider_Prop,
-} from "../types/auth.context";
+import { Provider_Prop } from "../types/auth.context";
 import { useNavigate } from "react-router-dom";
-import { AxiosError } from "axios";
+import {
+    auth,
+    signInWithFacebookPopup,
+    signInWithGooglePopup,
+} from "../utils/firebase/firebase.config";
+import { logUserOut, login, signup } from "../requests/auth";
+import { IError, errorFormater } from "../utils/errorFormater";
+import { getPassions } from "../requests/passion";
+import { UserCredential, signOut } from "firebase/auth";
 
-export const Auth_Context = createContext<Auth_Context_Type | null>(null);
-
-export const Auth_Context_Provider = ({ children }: Provider_Prop) => {
-    const [user, setUser] = useState<UserType>(null);
-    const [formError, setFormError] = useState<string>("");
-    const [isLoading, setIsLoading] = useState(false);
-    const [loginInfo, setLoginInfo] = useState({
+const AuthContext = createContext<AuthContextType>({
+    isSignUpModalOpen: false,
+    toggleSignUpModal: () => {},
+    isLoginModalOpen: false,
+    toggleLoginModal: () => {},
+    isEmailModalOpen: false,
+    toggleEmailModal: () => {},
+    signUpWithEmail: () => {},
+    registerInfo: {
         email: "",
-        password: "",
-    });
-    const [social_user, set_social_user] = useState({
-        firstName: "",
-        email: "",
-    });
-
-    const [registerInfo, setRegisterInfo] = useState<RegisterUserInfo>({
-        email: "",
-        firstName: "",
+        name: "",
         day: "",
         month: "",
         year: "",
@@ -38,174 +30,258 @@ export const Auth_Context_Provider = ({ children }: Provider_Prop) => {
         password: "",
         passion: [],
         pictures: [],
-    });
+        social_token: "",
+        interested_in: [],
+    },
+    signInWithSocial: async () => {},
+    signUpWithGoogle: async () => {},
+    signUpWithFacebook: async () => {},
+    user: null,
+    loginUser: async () => {},
+    passions: [],
+    formError: "",
+    signedInWithSocials: false,
+    isLoading: false,
+    registerUser: async () => {},
+    logout: () => {},
+});
 
-    const [showModal, setShowModal] = useState(false);
-    const [show_login_modal, set_show_login_modal] = useState(false);
+export const AuthProvider = ({ children }: Provider_Prop) => {
+    const navigate = useNavigate();
+    const [formError, setFormError] = useState<string>("");
+    const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+    const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
+    const [registerInfo, setRegisterInfo] = useState<RegisterUserInfo>({
+        email: "",
+        name: "",
+        day: "",
+        month: "",
+        year: "",
+        gender: "",
+        password: "",
+        passion: [],
+        pictures: [],
+        social_token: "",
+        interested_in: [],
+    });
+    const [user, setUser] = useState<ILoginresponse | null>(null);
+    const [passions, setPassions] = useState<IPassion[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
     const [signedInWithSocials, setSignedInWithSocials] = useState(false);
 
-    const [PASSION_DATA, SET_PASSION_DATA] = useState<Record<string, number>[]>(
-        [],
-    );
-    const navigate = useNavigate();
-
     useEffect(() => {
-        const fetch_passions = async () => {
-            const { passions } = await get_passions_array()!;
-            SET_PASSION_DATA(passions);
+        const fetchPassions = async () => {
+            const passions = await getPassions();
+            setPassions(passions.data);
         };
-        fetch_passions();
+        fetchPassions();
 
         const storedUser = localStorage.getItem("lumina-user");
 
-        if (typeof storedUser === "string") {
+        if (storedUser) {
             setUser(JSON.parse(storedUser));
         } else {
             setUser(null);
         }
     }, []);
 
-    const logout = () => {
-        localStorage.removeItem("lumina-user");
-        setUser(null);
-        navigate("/");
+    const toggleSignUpModal = () => {
+        setIsSignUpModalOpen(!isSignUpModalOpen);
     };
 
-    const gender_to_lower_case = registerInfo.gender.toLowerCase();
-
-    const social_register_details = {
-        email: registerInfo.email,
-        firstName: registerInfo.firstName,
-        birthday: `${registerInfo.day}-${registerInfo.month}-${registerInfo.year}`,
-        gender: gender_to_lower_case,
-        passions: [1, 2, 3, 4],
+    const toggleLoginModal = () => {
+        setIsLoginModalOpen(!isLoginModalOpen);
     };
 
-    const handle_signin_with_social = async () => {
-        setIsLoading(true);
-        setFormError("");
-
-        console.log("signing up with socials");
-        const response = await sign_in_with_social(
-            JSON.stringify(social_register_details),
-            "auth-login",
-        );
-        console.log(response);
-        setIsLoading(false);
-
-        if (response?.error) {
-            return setFormError(response?.error);
-        }
-        return response;
+    const toggleEmailModal = () => {
+        setIsEmailModalOpen(!isEmailModalOpen);
     };
 
-    // this function submits the registered user form
-    const handle_register_user = async (data: RegisterUserInfo) => {
-        setIsLoading(true);
-        setFormError("");
+    const signUpWithEmail = (email: string) => {
+        toggleEmailModal();
+        toggleSignUpModal();
+        setRegisterInfo({
+            ...registerInfo,
+            email,
+        });
+        navigate("/register");
+    };
 
-        const register_user_details = {
-            email: data.email,
-            firstName: data.firstName,
-            birthday: `${data.day}-${data.month}-${data.year}`,
-            gender: data.gender,
-            password: data.password,
-            passions: data.passion,
-            passwordConfirmation: data.password,
-            pic1: data.pictures[0],
-            pic2: data.pictures[1],
-            pic3: data.pictures[2],
-            pic4: data.pictures[3],
-            pic5: data.pictures[4],
-            pic6: data.pictures[5],
-        };
-
+    const signInWithSocial = async (type: "facebook" | "google") => {
+        let email = "";
+        let providerId = "";
+        let displayName = "";
         try {
-            const response = await client.post(
-                "create-account",
-                register_user_details,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                },
-            );
+            setSignedInWithSocials(true);
+            let response: UserCredential;
 
-            localStorage.setItem(
-                "lumina-user",
-                JSON.stringify(response.data.user),
-            );
+            toggleLoginModal();
+
+            if (type === "google") {
+                response = await signInWithGooglePopup();
+            } else {
+                response = await signInWithFacebookPopup();
+            }
+            email = response.user.email ?? "";
+            providerId = response.user.providerId;
+            displayName = response.user.displayName ?? "";
+
+            if (email) {
+                const res = await login({
+                    email,
+                    social_token: providerId,
+                });
+                localStorage.setItem("lumina-user", JSON.stringify(res.data));
+                setUser(res.data);
+
+                navigate("/explore");
+            }
+        } catch (err) {
+            const error = err as unknown as IError;
+            if (error.response?.status === 404) {
+                setRegisterInfo({
+                    ...registerInfo,
+                    email,
+                    social_token: providerId,
+                    name: displayName,
+                });
+                navigate("/register");
+            }
+        }
+    };
+
+    const signUpWithGoogle = async () => {
+        try {
+            setSignedInWithSocials(true);
+            const response = await signInWithGooglePopup();
+
+            const { displayName, email, providerId } = response.user;
+
+            if (displayName && email) {
+                setRegisterInfo({
+                    ...registerInfo,
+                    name: displayName,
+                    email,
+                    social_token: providerId,
+                });
+
+                navigate("/register");
+            } else {
+                setFormError("Unable to sign up with google");
+            }
+        } catch (err) {
+            console.log(err, "google sign up error");
+        }
+    };
+
+    const signUpWithFacebook = async () => {
+        setSignedInWithSocials(true);
+        try {
+            const response = await signInWithFacebookPopup();
+
+            const { displayName, email, providerId } = response.user;
+
+            if (displayName && email) {
+                setRegisterInfo({
+                    ...registerInfo,
+                    name: displayName,
+                    email,
+                    social_token: providerId,
+                });
+
+                navigate("/register");
+            } else {
+                setFormError("Unable to sign up with facebook");
+            }
+        } catch (err) {
+            console.log(err, "facebook sign up error");
+        }
+    };
+
+    const loginUser = async (data: ILogin) => {
+        setIsLoading(true);
+        setFormError("");
+        try {
+            const response = await login(data);
+            localStorage.setItem("lumina-user", JSON.stringify(response.data));
             setUser(response.data);
         } catch (error) {
-            const err = error as unknown as AxiosError<{
-                errors?: Array<{
-                    location: string;
-                    msg: string;
-                    path: string;
-                    type: string;
-                }>;
-                message?: string;
-            }>;
-            const errorArrayMessage = err.response?.data.errors
-                ? err.response.data.errors[0].msg
-                : "";
-            setFormError(err.response?.data.message || errorArrayMessage);
+            setFormError(errorFormater(error as unknown as IError));
         } finally {
             setIsLoading(false);
         }
     };
 
-    //   this function handles the login component submit button
-    const handle_login_user = useCallback(
-        async (e: React.FormEvent<HTMLFormElement>) => {
-            e.preventDefault();
+    // unfixed
 
-            setIsLoading(true);
-            setFormError("");
+    const logout = async () => {
+        await logUserOut();
+        localStorage.removeItem("lumina-user");
+        setUser(null);
+        signOut(auth).then(() => {
+            navigate("/");
+        });
+    };
 
-            const response = await authenticate_user(
-                JSON.stringify(loginInfo),
-                "sign-in",
-            );
+    // this function submits the registered user form
+    const registerUser = async (data: RegisterUserInfo) => {
+        setIsLoading(true);
+        setFormError("");
 
+        const register_user_details: ISignUp = {
+            email: data.email,
+            name: data.name,
+            birthday: `${data.day}-${data.month}-${data.year}`,
+            gender: data.gender,
+            password: data.password,
+            passions: data.passion,
+            pictures: data.pictures,
+            social_token: data.social_token,
+            interested_in: data.interested_in,
+        };
+
+        try {
+            const response = await signup(register_user_details);
+
+            localStorage.setItem("lumina-user", JSON.stringify(response.data));
+            setUser(response.data);
+            navigate("/explore");
+        } catch (error) {
+            setFormError(errorFormater(error as unknown as IError));
+        } finally {
             setIsLoading(false);
-
-            if (response?.error) {
-                return setFormError(response?.error);
-            }
-            console.log(response);
-
-            localStorage.setItem("lumina-user", JSON.stringify(response));
-            setUser(response);
-        },
-        [loginInfo],
-    );
+        }
+    };
 
     const value = {
-        handle_register_user,
-        handle_login_user,
-        setLoginInfo,
-        setRegisterInfo,
+        isSignUpModalOpen,
+        toggleSignUpModal,
+        isLoginModalOpen,
+        toggleLoginModal,
+        isEmailModalOpen,
+        toggleEmailModal,
+        signUpWithEmail,
+        signInWithSocial,
+        signUpWithGoogle,
+        signUpWithFacebook,
+        loginUser,
+        passions,
         isLoading,
         formError,
         user,
         registerInfo,
-        loginInfo,
-        social_user,
-        set_social_user,
-        handle_signin_with_social,
-        setFormError,
-        showModal,
-        setShowModal,
-        show_login_modal,
-        set_show_login_modal,
-        logout,
         signedInWithSocials,
-        setSignedInWithSocials,
-        PASSION_DATA,
+        registerUser,
+        logout,
     };
 
     return (
-        <Auth_Context.Provider value={value}>{children}</Auth_Context.Provider>
+        <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
     );
+};
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const useAuth = () => {
+    return useContext(AuthContext);
 };

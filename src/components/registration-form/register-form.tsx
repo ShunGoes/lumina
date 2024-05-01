@@ -1,6 +1,6 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import helper from "../../helper/helper";
-import { Auth_Context } from "../../context/auth.context";
+import { useAuth } from "../../context/auth.context";
 import Modal from "react-responsive-modal";
 import PassionItem from "../PassionItem";
 import { useForm } from "react-hook-form";
@@ -11,12 +11,12 @@ import { RegisterSchema } from "../../validators/authValidator";
 
 const Registration_Form = () => {
     const {
-        social_user,
         signedInWithSocials,
-        PASSION_DATA,
-        handle_register_user,
+        passions,
         formError,
-    } = useContext(Auth_Context)!;
+        registerInfo,
+        registerUser,
+    } = useAuth();
 
     const {
         register,
@@ -27,9 +27,12 @@ const Registration_Form = () => {
         clearErrors,
     } = useForm<RegisterUserInfo>({
         defaultValues: {
-            email: social_user.email || "",
+            name: registerInfo.name || "",
+            email: registerInfo.email || "",
             passion: [],
             pictures: [],
+            interested_in: [],
+            social_token: registerInfo.social_token || "",
         },
         resolver: yupResolver(RegisterSchema),
     });
@@ -48,7 +51,7 @@ const Registration_Form = () => {
     };
 
     const onSubmit = (data: RegisterUserInfo) => {
-        handle_register_user(data);
+        registerUser(data);
     };
 
     const updatePassion = (id: number, action: "add" | "remove" = "add") => {
@@ -60,6 +63,18 @@ const Registration_Form = () => {
         } else {
             setValue("passion", [...watch("passion"), id]);
             clearErrors("passion");
+        }
+    };
+
+    const setInterestedIn = (interest: "male" | "female") => {
+        const interests = watch("interested_in");
+        if (interests.includes(interest)) {
+            setValue(
+                "interested_in",
+                interests.filter((item) => item !== interest),
+            );
+        } else {
+            setValue("interested_in", [...interests, interest]);
         }
     };
 
@@ -75,8 +90,8 @@ const Registration_Form = () => {
                     <Input
                         label="Name"
                         placeholder="Name"
-                        {...register("firstName")}
-                        error={errors.firstName?.message}
+                        {...register("name")}
+                        error={errors.name?.message}
                     />
                     {!signedInWithSocials && (
                         <Input
@@ -178,6 +193,51 @@ const Registration_Form = () => {
                         )}
                     </div>
 
+                    <div className="my-4">
+                        <p className="text-[#2B2B2B] font-[500] text-[18px]">
+                            Interested in meeting
+                        </p>
+                        <div className="flex gap-4">
+                            <label
+                                htmlFor="men"
+                                className="flex flex-center text-[#2B2B2B] font-[500] text-[18px] mt-4"
+                            >
+                                <input
+                                    type="checkbox"
+                                    id="men"
+                                    name="men"
+                                    onChange={() => setInterestedIn("male")}
+                                    defaultChecked={watch(
+                                        "interested_in",
+                                    ).includes("male")}
+                                    className="mr-2 h-6 w-6 checked:bg-primary checked:border-primary checked:border-2 checked:rounded-[10px]"
+                                />
+                                Men
+                            </label>
+                            <label
+                                htmlFor="women"
+                                className="flex flex-center mt-4 text-[#2B2B2B] font-[500] text-[18px]"
+                            >
+                                <input
+                                    type="checkbox"
+                                    id="women"
+                                    name="women"
+                                    onChange={() => setInterestedIn("female")}
+                                    defaultChecked={watch(
+                                        "interested_in",
+                                    ).includes("male")}
+                                    className="mr-2 h-6 w-6 checked:bg-primary checked:border-primary checked:border-2 checked:rounded-[10px]"
+                                />
+                                Women
+                            </label>
+                        </div>
+                        {errors.interested_in?.message && (
+                            <p className="text-[#AA4A44] text-[14px]">
+                                {errors.interested_in?.message}
+                            </p>
+                        )}
+                    </div>
+
                     <div className="flex flex-col gap-2 my-2">
                         <label
                             htmlFor="passion"
@@ -187,8 +247,11 @@ const Registration_Form = () => {
                         </label>
                         <div className="w-10/12 flex flex-wrap">
                             {watch("passion").map((item: number) => (
-                                <div className="rounded-[20px] py-[8px] px-[12px] border-[1px] mr-[5px] mb-[5px] border-[#CCCCCC] text-[14px] font-[400] shrink-0">
-                                    {PASSION_DATA[item - 1].name}
+                                <div
+                                    key={item}
+                                    className="rounded-[20px] py-[8px] px-[12px] border-[1px] mr-[5px] mb-[5px] border-[#CCCCCC] text-[14px] font-[400] shrink-0"
+                                >
+                                    {passions[item - 1].name}
                                     <span
                                         className="text-[#F74887] ml-1 text-[16px] cursor-pointer"
                                         onClick={() =>
@@ -264,11 +327,10 @@ const Registration_Form = () => {
                         </p>
                     </div>
                     <div className="lg:w-[514px] w-full lg:h-[400px]  mx-auto flex   flex-wrap">
-                        {PASSION_DATA.map((passion) => (
+                        {passions.map((passion) => (
                             <PassionItem
                                 key={passion.id}
-                                passion={passion.name}
-                                idx={passion.id}
+                                passion={passion}
                                 isActive={watch("passion").includes(passion.id)}
                                 selectPassion={(id: number) => {
                                     if (watch("passion").includes(id)) {
