@@ -134,6 +134,7 @@ export const Auth_Context_Provider = ({ children }: Provider_Prop) => {
       localStorage.setItem("lumina-user", JSON.stringify(response.data.user));
       setUser(response.data);
     } catch (error) {
+        
       const err = error as unknown as AxiosError<{
         errors?: Array<{
           location: string;

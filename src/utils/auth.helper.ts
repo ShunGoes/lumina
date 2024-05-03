@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "https://lumina-be.onrender.com";
+const baseUrl = "https://lumina-wszdbcrgga-uc.a.run.app/api";
 
 const client = axios.create({
   baseURL: baseUrl,
