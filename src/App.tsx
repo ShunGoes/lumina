@@ -5,8 +5,6 @@ import "./App.css";
 import Loading from "./components/loading";
 // import Explore_Users from './pagges/explore-users/explore-users'
 // import Terms_And_Policy from './pagges/policy/policy'
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "./context/auth.context";
 
 function App() {
     const Home = lazy(() => import("./pagges/home/home"));
@@ -27,25 +25,12 @@ function App() {
     );
     const Terms_And_Policy = lazy(() => import("./pagges/policy/policy"));
 
-    const navigate = useNavigate();
-
-    const handle_navigate = (route: string) => {
-        navigate(`/${route}`);
-    };
-    const { user } = useAuth();
-
     return (
         <div>
             <Suspense fallback={<Loading />}>
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route
-                        path="/register"
-                        element={
-                            user ? handle_navigate("explore")! : <Register />
-                        }
-                    />
-                    {/* <Route path='/login' element={ user ? handle_navigate('explore')! : <Login />} /> */}
+                    <Route path="/register" element={<Register />} />
                     <Route path="/policy" element={<Terms_And_Policy />} />
                     <Route
                         path="/email-redirect"

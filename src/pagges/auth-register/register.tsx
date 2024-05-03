@@ -1,6 +1,19 @@
 import "./register.css";
 import Registration_Form from "../../components/registration-form/register-form";
+import { useAuth } from "../../context/auth.context";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 const Register_User = () => {
+    const { user } = useAuth();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (user) {
+            navigate("/explore");
+        }
+    }, [navigate, user]);
+
     return (
         <div className="  register">
             <nav className=" shadow shadow-[#5D6173] register-nav "></nav>
