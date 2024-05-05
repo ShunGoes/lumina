@@ -26,10 +26,9 @@ const ProfileUploads = ({
             uploadToCloudinary(file, setUploads);
             togglePictureOptions();
         }
-    };
+    };1
 
     const videoRef = useRef<HTMLVideoElement | null>(null);
-    const videoReference = videoRef.current;
 
     function dataURItoBlob(dataURI: string) {
         // convert base64/URLEncoded data component to raw binary data held in a string
@@ -47,17 +46,40 @@ const ProfileUploads = ({
         return new Blob([ia], { type: mimeString });
     }
 
+    const openCamera =  async () => {
+        toggleCamera()
+        
+        try{
+            const stream = await navigator.mediaDevices.getUserMedia({video: true, audio: false})
+
+            if(videoRef.current ){
+                videoRef.current.srcObject = stream
+                videoRef.current.play()
+            } else{
+                console.log("video refernce not found ")
+            }
+            
+            setTimeout(() => {
+                stream.getTracks().forEach(track => track.stop())
+            }, 50000)
+
+        } catch(error){
+            console.log( "Camera failed to open ", error);
+            
+        }
+    }
+
     const captureImage = async () => {
         try {
             const canvas_element = document.createElement("canvas");
             const ctx = canvas_element?.getContext("2d");
 
-            if (ctx && videoReference) {
+            if (ctx && videoRef.current) {
                 canvas_element!.width = 100;
                 canvas_element!.height = 100;
 
                 ctx?.drawImage(
-                    videoReference!,
+                    videoRef.current!,
                     0,
                     0,
                     canvas_element!.width,
@@ -77,8 +99,8 @@ const ProfileUploads = ({
                 }
             }
 
-            if (videoReference) {
-                videoReference.srcObject = null;
+            if (videoRef.current) {
+                videoRef.current.srcObject = null;
             }
         } catch (err) {
             console.log(`An error occured on line 146. error type - ${err}`);
@@ -164,7 +186,7 @@ const ProfileUploads = ({
                                     </label>
                                 </div>
                                 <div
-                                    onClick={toggleCamera}
+                                    onClick={openCamera}
                                     className="w-full lg:w-[354px] mx-auto cursor-pointer h-[58px] rounded-[32px] border-[2px] border-[#CCCCCC] py-[10px] px-[24px] flex  items-center "
                                 >
                                     <div className="w-[20%]">
@@ -185,7 +207,7 @@ const ProfileUploads = ({
             <Modal open={isCameraOpen} onClose={toggleCamera}>
                 {/* <div className="absolute top-0 bottom-0 left-0 right-0 h-[80vh] flex justify-center items-center  "> */}
                 <div className="w-8/12 h-8/12  flex justify-between">
-                    <video ref={videoRef} className="border rounded-[10px] " />
+                    <video ref={videoRef} className="border rounded-[10px] " autoPlay></video>
                     <div className="flex flex-col gap-3">
                         <button
                             className="w-[5rem]  h-[50px] bg-black text-white py-[10px]  rounded-[10px]  "
