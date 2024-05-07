@@ -29,7 +29,6 @@ const ProfileUploads = ({
     };
 
     const videoRef = useRef<HTMLVideoElement | null>(null);
-    const videoReference = videoRef.current;
 
     function dataURItoBlob(dataURI: string) {
         // convert base64/URLEncoded data component to raw binary data held in a string
@@ -47,17 +46,41 @@ const ProfileUploads = ({
         return new Blob([ia], { type: mimeString });
     }
 
+    const openCamera = async () => {
+        toggleCamera();
+
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: true,
+                audio: false,
+            });
+
+            if (videoRef.current) {
+                videoRef.current.srcObject = stream;
+                videoRef.current.play();
+            } else {
+                console.log("video refernce not found ");
+            }
+
+            setTimeout(() => {
+                stream.getTracks().forEach((track) => track.stop());
+            }, 50000);
+        } catch (error) {
+            console.log("Camera failed to open ", error);
+        }
+    };
+
     const captureImage = async () => {
         try {
             const canvas_element = document.createElement("canvas");
             const ctx = canvas_element?.getContext("2d");
 
-            if (ctx && videoReference) {
+            if (ctx && videoRef.current) {
                 canvas_element!.width = 100;
                 canvas_element!.height = 100;
 
                 ctx?.drawImage(
-                    videoReference!,
+                    videoRef.current!,
                     0,
                     0,
                     canvas_element!.width,
@@ -77,8 +100,8 @@ const ProfileUploads = ({
                 }
             }
 
-            if (videoReference) {
-                videoReference.srcObject = null;
+            if (videoRef.current) {
+                videoRef.current.srcObject = null;
             }
         } catch (err) {
             console.log(`An error occured on line 146. error type - ${err}`);
@@ -164,7 +187,7 @@ const ProfileUploads = ({
                                     </label>
                                 </div>
                                 <div
-                                    onClick={toggleCamera}
+                                    onClick={openCamera}
                                     className="w-full lg:w-[354px] mx-auto cursor-pointer h-[58px] rounded-[32px] border-[2px] border-[#CCCCCC] py-[10px] px-[24px] flex  items-center "
                                 >
                                     <div className="w-[20%]">
