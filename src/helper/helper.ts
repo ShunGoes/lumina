@@ -31,10 +31,13 @@ import {default as Favorite} from '../assets/favorite.svg'
 import {default as Fresh_Guy} from '../assets/fresh-guy.svg'
 import {default as Mail_Black} from '../assets/mail-black.svg'
 import {default as User} from '../assets/user.svg'
-
+import {default as Remove} from '../assets/remove.svg'
+import {default as Dropdown} from '../assets/dropdown.svg'
 
 
 export default {
+    Dropdown,
+    Remove,
     Fresh_Guy,
     User,   
     No_Match,

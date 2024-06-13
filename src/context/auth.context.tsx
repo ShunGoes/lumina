@@ -44,6 +44,8 @@ const AuthContext = createContext<AuthContextType>({
     isLoading: false,
     registerUser: async () => {},
     logout: () => {},
+    verifiedEmail: false,
+    closeVerifyEmailModal: () => null,
 });
 
 export const AuthProvider = ({ children }: Provider_Prop) => {
@@ -69,6 +71,7 @@ export const AuthProvider = ({ children }: Provider_Prop) => {
     const [passions, setPassions] = useState<IPassion[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [signedInWithSocials, setSignedInWithSocials] = useState(false);
+    const [verifiedEmail, setVerifiedEmail] = useState(false)
 
     useEffect(() => {
         const fetchPassions = async () => {
@@ -85,7 +88,9 @@ export const AuthProvider = ({ children }: Provider_Prop) => {
             setUser(null);
         }
     }, []);
-
+    const closeVerifyEmailModal = () => {
+        setVerifiedEmail(true)
+    }
     const toggleSignUpModal = () => {
         setIsSignUpModalOpen(!isSignUpModalOpen);
     };
@@ -274,6 +279,8 @@ export const AuthProvider = ({ children }: Provider_Prop) => {
         signedInWithSocials,
         registerUser,
         logout,
+        verifiedEmail,
+        closeVerifyEmailModal,
     };
 
     return (

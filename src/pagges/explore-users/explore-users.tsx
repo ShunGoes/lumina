@@ -1,15 +1,18 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import helper from "../../helper/helper";
 import "./explore-user.css";
 import Explore_Sidebar from "../../components/explore-sidebar/explore-sidebar";
-import {Modal} from "react-responsive-modal"
+import { Modal } from "react-responsive-modal";
 // import { BiCollapse } from "react-icons/bi";
-
-import { AiOutlineNodeCollapse } from "react-icons/ai"
+import {AnimatePresence, motion} from "framer-motion"
+import { AiOutlineNodeCollapse } from "react-icons/ai";
+import { useAuth } from "../../context/auth.context";
+import { useNavigate } from "react-router-dom";
 
 const Explore_Users = () => {
   const [tab, setTab] = useState(0);
-  const [show_explore_modal, set_show_explore_modal] = useState(false)
+  const { verifiedEmail, closeVerifyEmailModal, logout } = useAuth();
+  const [show_explore_modal, set_show_explore_modal] = useState(false);
   const tab_array: undefined[] = Array.from({ length: 6 });
   const img_array = [
     helper.Fresh_Guy,
@@ -19,14 +22,15 @@ const Explore_Users = () => {
     helper.Cozy_Evening,
     helper.Friendship_Goals,
   ];
+  const navigate = useNavigate();
 
-  function openExploreModal(){
-    set_show_explore_modal(true)
+  function openExploreModal() {
+    set_show_explore_modal(true);
   }
-  function closeExploreModal(){
-    set_show_explore_modal(false)
+  function closeExploreModal() {
+    set_show_explore_modal(false);
   }
-  
+
   const handle_chsnge_tab = (index: number) => {
     setTab(index);
   };
@@ -37,14 +41,38 @@ const Explore_Users = () => {
   const inverted_overlay = {
     background: "linear-gradient(to top, #000000E0, #00000014 )",
   };
-
+  function nav_function(id: string) {
+    navigate(id);
+  }
+  const items = [
+    {
+      title: "Dashboard",
+      icon: helper.Location_Icon,
+      link: "/explore/location",
+    },
+    {
+      title: "Profile",
+      icon: helper.Location_Icon,
+      link: "/explore/location",
+    },
+    {
+      title: "Message",
+      icon: helper.Mail_Black,
+      link: "/explore/message",
+    },
+    {
+      title: "Matches",
+      icon: helper.Frame_3,
+      link: "/explore/match",
+    },
+  ];
   return (
-    <div className="h-full w-full  flex lg:w-[95%] lg:mx-auto lg:h-[950px] lg:justify-between items-center">
+    <div className="h-full w-full  flex lg:w-[95%] lg:mx-auto lg:h-[950px] lg:justify-between items-center ">
       <div className="w-4/12 hidden lg:block  ">
         <Explore_Sidebar />
       </div>
-      <div className="lg:w-8/12 w-full lg:h-full explore-sm   flex justify-center items-center lg:items-start  ">
-        <div className="w-[500px]  h-full lg:h-[654px] lg:max-h-[654px] lg:mt-[2.5rem]  relative ">
+      <div className="lg:w-8/12 w-full  relative  explore-sm  flex justify-center items-center lg:items-start  ">
+        <div className="w-[500px]  h-full lg:h-[90%] lg:max-h-[654px] lg:mt-[2.5rem]   relative ">
           <div className="grid grid-cols-6 gap-4 w-[90%]  z-10 mx-auto cursor-pointer absolute top-5 left-0 right-0">
             {tab_array.map((item: undefined, index) => (
               <div
@@ -61,15 +89,18 @@ const Explore_Users = () => {
             ))}
           </div>
 
-          <div className="h-full lg:rounded-[20px] relative ">
+          <div className="h-full lg:rounded-[20px] relative  ">
             <img
               src={img_array[tab]}
               alt=""
               className="h-full w-full object-cover lg:rounded-[20px]"
             />
-              <div onClick={openExploreModal} className=" w-[50px] h-[50px] absolute top-[50%] bottom-[50%] right-2 lg:hidden text-[#FFFFFF] bg-black/50 z-10 flex justify-center items-center rounded-[10px]">
-                  <AiOutlineNodeCollapse  size={30}/>
-              </div>
+            <div
+              onClick={openExploreModal}
+              className=" w-[50px] h-[50px] absolute top-[50%] bottom-[50%] right-2 lg:hidden text-[#FFFFFF] bg-black/50 z-10 flex justify-center items-center rounded-[10px]"
+            >
+              <AiOutlineNodeCollapse size={30} />
+            </div>
             <div
               style={overlay}
               className=" h-full absolute top-0  w-full flex flex-col lg:rounded-[20px] justify-end "
@@ -115,9 +146,25 @@ const Explore_Users = () => {
             </div>
           </div>
         </div>
+        {!verifiedEmail && (
+          <div className="lg:w-[429px] w-10/12 px-[20px] py-[20px] flex flex-col  items-center justify-between  h-[181px] lg:py-[15px] lg:px-[15px] bg-[#FFFFFF] explore-overlay rounded-[10px] absolute right-3 top-0 lg:top-3 lg:-right-5 z-10  ">
+            <div className="flex mb-[10px] lg:mb-0 w-full justify-end" onClick={closeVerifyEmailModal}>
+              <img src={helper.Remove} alt="cancel modal button" className="" />
+            </div>
+            <p className="text-[#455A64] font-[500] text-[14px] lg:text-[16px]  text-center w-full lg:w-[396px] leading-[22.4px] ">
+              Verify your email address to unlock all features and ensure
+              account security
+            </p>
+            <button className="bg-[#F74887] flex items-center justify-center h-[42px] rounded-[32px] lg:py-[10px] lg:px-[24px] w-9/12 lg:w-[257px] text-[#FDF7FF] mt-[1rem] font-[700] lg:text-[16px] text-[14px">
+              Verify Email
+            </button>
+          </div>
+        )}
+
+       
       </div>
       <Modal open={show_explore_modal} onClose={closeExploreModal} center>
-          <Explore_Sidebar />
+        <Explore_Sidebar />
       </Modal>
     </div>
   );

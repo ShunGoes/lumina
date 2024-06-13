@@ -10,6 +10,8 @@ export const AppConfigContext = createContext<{
         image: File | Blob,
         onSuccessCallback: (e: string) => void,
     ) => void;
+    profileDropdown: boolean;
+    handleProfileDropdown: () => void
 }>({
     isCameraOpen: false,
     toggleCamera: () => null,
@@ -18,11 +20,15 @@ export const AppConfigContext = createContext<{
     uploadedFileUrl: "",
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     uploadToCloudinary: (_image: File | Blob) => null,
+    profileDropdown: false,
+    handleProfileDropdown: () => null
 });
 
 export const AppConfigProvider = ({ children }: { children: ReactNode }) => {
     const [isCameraOpen, setCameraOpen] = useState<boolean>(false);
     const [isPictureOptionOpen, setIsPictureOptionOpen] = useState(false);
+    const [profileDropdown, setProfileDropdown] = useState(false);
+
     const [uploadedFileUrl, setUploadedFileUrl] = useState<string>("");
 
     const toggleCamera = () => {
@@ -32,6 +38,10 @@ export const AppConfigProvider = ({ children }: { children: ReactNode }) => {
     const togglePictureOptions = () => {
         setIsPictureOptionOpen(!isPictureOptionOpen);
     };
+
+    function handleProfileDropdown(){
+        setProfileDropdown(!profileDropdown)
+    }
 
     const uploadToCloudinary = async (
         file: Blob | File,
@@ -71,6 +81,8 @@ export const AppConfigProvider = ({ children }: { children: ReactNode }) => {
         isPictureOptionOpen,
         uploadedFileUrl,
         uploadToCloudinary,
+        profileDropdown,
+        handleProfileDropdown
     };
 
     return (

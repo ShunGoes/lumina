@@ -85,4 +85,6 @@ interface AuthContextType {
     data: RegisterUserInfo
   ) => Promise<void>;
   logout: () => void;
+  verifiedEmail: boolean;
+  closeVerifyEmailModal: () => void
 }
