@@ -8,20 +8,18 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { FaTimes } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/auth.context";
-import { useAppConfig } from "../../context/appConfig.context";
 
 const Explore_Nav = () => {
   const [dropdown, setDropdown] = useState(false);
   const [desktopDropdown, setDesktopDropdown] = useState(false);
-  const { user, logout } = useAuth();
-  const {handleProfileDropdown} = useAppConfig()
+  const {logout } = useAuth();
   const ref = useRef(null);
 
-  let firstName;
+  // let firstName;
 
-  if (typeof user?.name === "string") {
-    firstName = user?.name.split(" ")[0];
-  }
+  // if (typeof user?.name === "string") {
+  //   firstName = user?.name.split(" ")[0];
+  // }
 
   const navigate = useNavigate();
 

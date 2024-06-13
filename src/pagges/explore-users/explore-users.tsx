@@ -1,17 +1,15 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import helper from "../../helper/helper";
 import "./explore-user.css";
 import Explore_Sidebar from "../../components/explore-sidebar/explore-sidebar";
 import { Modal } from "react-responsive-modal";
 // import { BiCollapse } from "react-icons/bi";
-import {AnimatePresence, motion} from "framer-motion"
 import { AiOutlineNodeCollapse } from "react-icons/ai";
 import { useAuth } from "../../context/auth.context";
-import { useNavigate } from "react-router-dom";
 
 const Explore_Users = () => {
   const [tab, setTab] = useState(0);
-  const { verifiedEmail, closeVerifyEmailModal, logout } = useAuth();
+  const { verifiedEmail, closeVerifyEmailModal } = useAuth();
   const [show_explore_modal, set_show_explore_modal] = useState(false);
   const tab_array: undefined[] = Array.from({ length: 6 });
   const img_array = [
@@ -22,7 +20,6 @@ const Explore_Users = () => {
     helper.Cozy_Evening,
     helper.Friendship_Goals,
   ];
-  const navigate = useNavigate();
 
   function openExploreModal() {
     set_show_explore_modal(true);
@@ -41,31 +38,7 @@ const Explore_Users = () => {
   const inverted_overlay = {
     background: "linear-gradient(to top, #000000E0, #00000014 )",
   };
-  function nav_function(id: string) {
-    navigate(id);
-  }
-  const items = [
-    {
-      title: "Dashboard",
-      icon: helper.Location_Icon,
-      link: "/explore/location",
-    },
-    {
-      title: "Profile",
-      icon: helper.Location_Icon,
-      link: "/explore/location",
-    },
-    {
-      title: "Message",
-      icon: helper.Mail_Black,
-      link: "/explore/message",
-    },
-    {
-      title: "Matches",
-      icon: helper.Frame_3,
-      link: "/explore/match",
-    },
-  ];
+ 
   return (
     <div className="h-full w-full  flex lg:w-[95%] lg:mx-auto lg:h-[950px] lg:justify-between items-center ">
       <div className="w-4/12 hidden lg:block  ">
