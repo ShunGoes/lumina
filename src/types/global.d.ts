@@ -63,6 +63,11 @@ interface IPassion {
   name: string;
 }
 
+interface IPicture {
+  id: string;
+  url: string;
+}
+
 interface AuthContextType {
   isSignUpModalOpen: boolean;
   toggleSignUpModal: () => void;
@@ -86,5 +91,20 @@ interface AuthContextType {
   ) => Promise<void>;
   logout: () => void;
   verifiedEmail: boolean;
-  closeVerifyEmailModal: () => void
+  closeVerifyEmailModal: () => void;
+  loading: {
+    resendOtp: boolean;
+  },
+  resendOtp: () => void;
+  message: string;
+}
+
+interface IExplore {
+  id: string;
+  name: string;
+  gender: string;
+  age: string;
+  interested_in: string[];
+  pictures: IPicture[];
+  passions: IPassion[];
 }

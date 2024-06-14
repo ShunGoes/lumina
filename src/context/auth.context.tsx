@@ -11,6 +11,7 @@ import { logUserOut, login, signup } from "../requests/auth";
 import { IError, errorFormater } from "../utils/errorFormater";
 import { getPassions } from "../requests/passion";
 import { UserCredential, signOut } from "firebase/auth";
+import client from "../requests";
 
 const AuthContext = createContext<AuthContextType>({
     isSignUpModalOpen: false,
@@ -46,6 +47,11 @@ const AuthContext = createContext<AuthContextType>({
     logout: () => {},
     verifiedEmail: false,
     closeVerifyEmailModal: () => null,
+    loading: {
+        resendOtp: false,
+    },
+    resendOtp: async () => {},
+    message: "",
 });
 
 export const AuthProvider = ({ children }: Provider_Prop) => {
@@ -71,7 +77,11 @@ export const AuthProvider = ({ children }: Provider_Prop) => {
     const [passions, setPassions] = useState<IPassion[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [signedInWithSocials, setSignedInWithSocials] = useState(false);
-    const [verifiedEmail, setVerifiedEmail] = useState(false)
+    const [verifiedEmail, setVerifiedEmail] = useState(false);
+    const [loading, setLoading] = useState({
+        resendOtp: false,
+    });
+    const [message, setMessage] = useState("");
 
     useEffect(() => {
         const fetchPassions = async () => {
@@ -89,8 +99,8 @@ export const AuthProvider = ({ children }: Provider_Prop) => {
         }
     }, []);
     const closeVerifyEmailModal = () => {
-        setVerifiedEmail(true)
-    }
+        setVerifiedEmail(true);
+    };
     const toggleSignUpModal = () => {
         setIsSignUpModalOpen(!isSignUpModalOpen);
     };
@@ -210,11 +220,27 @@ export const AuthProvider = ({ children }: Provider_Prop) => {
         try {
             const response = await login(data);
             localStorage.setItem("lumina-user", JSON.stringify(response.data));
+            localStorage.setItem("lumina-token", response.data.token);
             setUser(response.data);
+            navigate("/explore");
         } catch (error) {
             setFormError(errorFormater(error as unknown as IError));
         } finally {
             setIsLoading(false);
+        }
+    };
+
+    const resendOtp = async () => {
+        setLoading((prev) => ({ ...prev, resendOtp: true }));
+        try {
+            const res = await client.post("/auth/resend-otp", {
+                email: user?.email,
+            });
+            setMessage(res.data.message);
+        } catch (error) {
+            setMessage(errorFormater(error as unknown as IError));
+        } finally {
+            setLoading((prev) => ({ ...prev, resendOtp: false }));
         }
     };
 
@@ -281,6 +307,9 @@ export const AuthProvider = ({ children }: Provider_Prop) => {
         logout,
         verifiedEmail,
         closeVerifyEmailModal,
+        loading,
+        resendOtp,
+        message,
     };
 
     return (
