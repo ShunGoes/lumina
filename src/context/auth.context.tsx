@@ -52,6 +52,7 @@ const AuthContext = createContext<AuthContextType>({
     },
     resendOtp: async () => {},
     message: "",
+    isAuthenticated: () => false,
 });
 
 export const AuthProvider = ({ children }: Provider_Prop) => {
@@ -98,6 +99,7 @@ export const AuthProvider = ({ children }: Provider_Prop) => {
             setUser(null);
         }
     }, []);
+
     const closeVerifyEmailModal = () => {
         setVerifiedEmail(true);
     };
@@ -244,6 +246,8 @@ export const AuthProvider = ({ children }: Provider_Prop) => {
         }
     };
 
+    const isAuthenticated = () => user !== null;
+
     // unfixed
 
     const logout = async () => {
@@ -310,6 +314,7 @@ export const AuthProvider = ({ children }: Provider_Prop) => {
         loading,
         resendOtp,
         message,
+        isAuthenticated,
     };
 
     return (

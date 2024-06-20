@@ -6,9 +6,14 @@ import { useAuth } from "../context/auth.context";
 const Explore_Layout = () => {
     const { user, resendOtp, loading, message } = useAuth();
     return (
-        <div className="flex flex-col">
+        <div>
             <Explore_Nav />
-            <div className="flex-1">
+            <div
+                style={{
+                    height: "calc(100vh - 80px)",
+                }}
+                className="overflow-hidden overflow-y-scroll"
+            >
                 {user ? (
                     <>
                         {!user.is_email_verified && (
