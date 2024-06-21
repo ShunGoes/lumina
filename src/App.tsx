@@ -24,6 +24,7 @@ function App() {
         () => import("./pagges/explore-users/explore-users"),
     );
     const Terms_And_Policy = lazy(() => import("./pagges/policy/policy"));
+    const Matches = lazy(() => import("./pagges/matches/index"));
 
     return (
         <div>
@@ -43,6 +44,7 @@ function App() {
                             element={<TindExplore_Profileer />}
                         />
                         <Route path="edit-profile" element={<Edit_Profile />} />
+                        <Route path="matches" element={<Matches />} />
                     </Route>
                 </Routes>
             </Suspense>

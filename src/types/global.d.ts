@@ -97,8 +97,8 @@ interface AuthContextType {
   },
   resendOtp: () => void;
   message: string;
+  isAuthenticated: () => boolean;
 }
-
 interface IExplore {
   id: string;
   name: string;
@@ -108,3 +108,20 @@ interface IExplore {
   pictures: IPicture[];
   passions: IPassion[];
 }
+
+interface IChatSummary {
+  id: string;
+  name: string;
+  picture: string;
+  messages: Array<IMessage>
+}
+
+interface IMessage {
+  id: string;
+  message: string;
+  status: TMessageStatus;
+  created_at: Date;
+  sender: string;
+}
+
+type TMessageStatus = "sent" | "delivered" | "read";

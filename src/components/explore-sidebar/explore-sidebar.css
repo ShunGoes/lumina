@@ -1,7 +1,7 @@
-.explore-sidebar{
-    box-shadow: 4px 4px 0 0  #0000001F;
+.explore-sidebar {
+    /* box-shadow: 4px 4px 0 0  #0000001F; */
     overflow: auto;
 }
-.explore-sidebar::-webkit-scrollbar{
+.explore-sidebar::-webkit-scrollbar {
     display: none;
 }

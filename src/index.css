@@ -26,6 +26,36 @@ p {
 
 @layer components {
     .btn {
-        @apply px-[24px] py-[10px] h-[50px] text-white bg-[#F74887] rounded-[10px] outline-none font-[700];
+        @apply flex items-center px-[24px] h-[50px] text-white bg-[#F74887] rounded-[10px] outline-none font-[700];
+    }
+    .chat-bubble-send {
+        @apply bg-primary rounded-xl rounded-br-none;
+    }
+    .chat-bubble-receive {
+        @apply bg-[#555555] rounded-xl rounded-bl-none;
+    }
+    .chat-bubble {
+        @apply p-4 text-white inline-block w-auto max-w-[300px] my-2;
+    }
+
+    .explore-sm {
+        height: calc(100vh - 80px);
+    }
+    .explore-overlay {
+        box-shadow: 0px 4px 4px 0px #00000040;
+    }
+
+    .sidebar {
+        height: calc(100vh - 80px);
+    }
+
+    .profile {
+        height: calc(100vh - 80px);
+    }
+
+    @media screen and (min-width: 1024px) {
+        .explore-sm {
+            height: 670px;
+        }
     }
 }

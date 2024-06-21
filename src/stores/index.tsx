@@ -1,15 +1,21 @@
 "use client";
 import React, { createContext, useContext } from "react";
 import ExploreStore from "./Explore";
+import { AuthStore } from "./Auth";
+import { MessageStore } from "./Message";
 
 interface StoreProviderProps {
     children: React.ReactNode;
 }
 
 export class RootStore {
+    AuthStore: AuthStore;
     ExploreStore: ExploreStore;
+    MessageStore: MessageStore;
     constructor() {
+        this.AuthStore = new AuthStore(this);
         this.ExploreStore = new ExploreStore(this);
+        this.MessageStore = new MessageStore(this);
     }
 }
 
