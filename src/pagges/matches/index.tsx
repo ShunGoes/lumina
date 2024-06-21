@@ -9,7 +9,7 @@ const Matches = () => {
     } = useStore();
 
     const [view, setView] = useState<"match" | "profile">("match");
-
+    console.log(view)
     const handleView = (id: string) => {
         getUser(id);
         setView("profile");

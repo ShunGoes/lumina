@@ -1,7 +1,5 @@
 import { useState } from "react";
-import helper from "../../helper/helper";
 import { observer } from "mobx-react-lite";
-import { useStore } from "../../stores";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const ProfileCard = ({
@@ -10,19 +8,14 @@ const ProfileCard = ({
     name,
     age,
     gender,
-    id,
 }: IExplore) => {
-    const {
-        ExploreStore: { like, dislike },
-    } = useStore();
+   
     const [tab, setTab] = useState(0);
 
     const overlay = {
         background: "linear-gradient(to bottom, #00000014, #000000E0)",
     };
-    const inverted_overlay = {
-        background: "linear-gradient(to top, #000000E0, #00000014 )",
-    };
+   
 
     return (
         <div className="w-[500px]  h-full lg:h-[90%] lg:max-h-[654px] lg:mt-[2.5rem]   relative ">
