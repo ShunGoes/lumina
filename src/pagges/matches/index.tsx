@@ -1,18 +1,16 @@
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../stores";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ProfileCard from "../../components/profileCard";
 
+// eslint-disable-next-line react-refresh/only-export-components
 const Matches = () => {
     const {
         ExploreStore: { matches, getMatches, isLoading, getUser, user },
     } = useStore();
 
-    const [view, setView] = useState<"match" | "profile">("match");
-
     const handleView = (id: string) => {
         getUser(id);
-        setView("profile");
     };
 
     useEffect(() => {
@@ -61,4 +59,5 @@ const Matches = () => {
     );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export default observer(Matches);
