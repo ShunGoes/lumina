@@ -264,10 +264,17 @@ export const AuthProvider = ({ children }: Provider_Prop) => {
         setIsLoading(true);
         setFormError("");
 
+        const date = new Date();
+        date.setFullYear(
+            Number(data.year),
+            Number(data.month) - 1,
+            Number(data.day),
+        );
+
         const register_user_details: ISignUp = {
             email: data.email,
             name: data.name,
-            birthday: `${data.day}-${data.month}-${data.year}`,
+            birthday: date,
             gender: data.gender,
             password: data.password,
             passions: data.passion,

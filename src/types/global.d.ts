@@ -36,7 +36,7 @@ interface ISignUp {
   passions: number[];
   interested_in: string[];
   pictures: string[];
-  birthday: string;
+  birthday: Date;
   social_token?: string;
 }
 
