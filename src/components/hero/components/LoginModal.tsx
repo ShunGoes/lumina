@@ -2,7 +2,7 @@ import Modal from "react-responsive-modal";
 import { useAuth } from "../../../context/auth.context";
 import { useForm } from "react-hook-form";
 import Input from "../../Input";
-import { FaFacebookF, FaRegUser } from "react-icons/fa";
+import { FaFacebookF, FaLock, FaRegUser } from "react-icons/fa";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LoginSchema } from "../../../validators/authValidator";
 import { FcGoogle } from "react-icons/fc";
@@ -46,19 +46,21 @@ const LoginModal = () => {
                     <div className="lg:h-[370px]  flex flex-col gap-[3rem] lg:gap-3 lg:justify-between ">
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div className="flex flex-col items-center gap-4 lg:gap-5  ">
-                                <div className="relative lg:h-[40px] lg:w-[367px] w-11/12 ">
+                                <div className="flex items-center lg:h-[40px] lg:w-[367px] w-11/12 ">
+                                    <div className="flex items-center w-[30px]">
+                                        <FaRegUser />
+                                    </div>
                                     <Input
                                         type="email"
                                         {...register("email")}
-                                        placeholder="Enter yoour email address"
+                                        placeholder="Enter your email address"
                                         error={errors.email?.message}
                                     />
-
-                                    <div className="flex items-center  left-3 lg:left-5 h-full absolute top-0 w-[30px]">
-                                        <FaRegUser />
-                                    </div>
                                 </div>
-                                <div className="lg:h-[46px] lg:w-[367px] w-11/12  ">
+                                <div className="flex items-center lg:h-[46px] lg:w-[367px] w-11/12  ">
+                                    <div className="flex items-center w-[30px]">
+                                        <FaLock />
+                                    </div>
                                     <Input
                                         type="password"
                                         {...register("password")}

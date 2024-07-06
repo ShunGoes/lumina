@@ -8,7 +8,7 @@ import Loading from "./components/loading";
 
 function App() {
     const Home = lazy(() => import("./pagges/home/home"));
-    // const Login = lazy(() => import('./pagges/auth-login/login'))
+    const Verify = lazy(() => import("./pagges/auth-register/verify"));
     const Register = lazy(() => import("./pagges/auth-register/register"));
     const TindExplore_Profileer = lazy(
         () => import("./pagges/explore-profile/explore-profile"),
@@ -32,6 +32,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/register" element={<Register />} />
+                    <Route path="/auth/verify" element={<Verify />} />
                     <Route path="/policy" element={<Terms_And_Policy />} />
                     <Route
                         path="/email-redirect"

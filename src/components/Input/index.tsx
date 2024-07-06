@@ -8,10 +8,10 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 const Input: React.FC<InputProps> = forwardRef<HTMLInputElement, InputProps>(
     ({ label, width = "full", error, ...props }, ref) => {
-            // console.log(props.value, props.name)
+        // console.log(props.value, props.name)
         return (
             <div
-                className={`w-${width} flex flex-col gap-2 ${
+                className={`w-${width} h-12 flex flex-col gap-2 ${
                     width !== "full" ? "my-0" : "my-2"
                 }`}
             >

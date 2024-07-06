@@ -45,7 +45,7 @@ interface IOtp {
 }
 
 interface IVerifyOtp extends IOtp {
-  email: string;
+  id: string;
 }
 
 interface IEmail {
