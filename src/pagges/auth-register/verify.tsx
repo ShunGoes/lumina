@@ -15,6 +15,14 @@ const Verify = () => {
         verifyEmail({ id, otp });
     }, [id, otp, verifyEmail]);
 
+    React.useEffect(() => {
+        if (verifySuccess) {
+            setTimeout(() => {
+                window.location.href = "/";
+            }, 2000);
+        }
+    }, [verifySuccess]);
+
     return (
         <div className="h-[100vh] w-full flex items-center justify-center">
             <h3 className="text-center">

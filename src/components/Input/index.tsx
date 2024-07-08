@@ -11,7 +11,7 @@ const Input: React.FC<InputProps> = forwardRef<HTMLInputElement, InputProps>(
         // console.log(props.value, props.name)
         return (
             <div
-                className={`w-${width} h-12 flex flex-col gap-2 ${
+                className={`w-${width} flex flex-col gap-2 ${
                     width !== "full" ? "my-0" : "my-2"
                 }`}
             >
